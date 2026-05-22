@@ -1,5 +1,5 @@
 import React from 'react'
-import type forgetPassword from './forget-password';
+import type forgetPassword from './forgot-password';
 
 const resetPassword = () => {
   return (
