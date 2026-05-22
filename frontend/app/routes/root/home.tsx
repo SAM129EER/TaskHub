@@ -1,4 +1,11 @@
+import HeroSection from "@/modules/LandingPage/hero-section";
 import type { Route } from "../../+types/root";
+import Navbar from "@/modules/LandingPage/navbar";
+import FeaturesSection from "@/modules/LandingPage/features";
+import HowItWorks from "@/modules/LandingPage/how-it-works";
+import BenefitsSection from "@/modules/LandingPage/benifit-section";
+import Footer from "@/modules/LandingPage/footer";
+import CTASection from "@/modules/LandingPage/cta-section";
 export function meta({}: Route.MetaArgs) {
   return [
     { title: "TaskHub - Modern Task Management" },
@@ -11,7 +18,14 @@ export function meta({}: Route.MetaArgs) {
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-white">
+    <main className="">
+      <Navbar />
+      <HeroSection />
+      <FeaturesSection />
+      <HowItWorks />
+      <BenefitsSection />
+      <CTASection />
+      <Footer />
     </main>
   );
 }

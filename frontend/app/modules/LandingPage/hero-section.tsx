@@ -1,9 +1,5 @@
-import {
-  ArrowRight,
-  CheckCircle2,
-  FolderKanban,
-} from "lucide-react";
-
+import { ArrowRight, CheckCircle2, FolderKanban} from "lucide-react";
+import { Link } from "react-router";
 import { Button } from "@/components/ui/button";
 
 export default function HeroSection() {
@@ -28,16 +24,18 @@ export default function HeroSection() {
 
           {/* DESCRIPTION */}
           <p className="mt-6 max-w-xl text-lg leading-8 text-black/60">
-            Organize projects, collaborate with your team, and
-            track progress in one powerful productivity platform.
+            Organize projects, collaborate with your team, and track progress in
+            one powerful productivity platform.
           </p>
 
           {/* BUTTONS */}
           <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-            <Button className="h-12 rounded-xl bg-blue-600 px-8 text-base hover:bg-blue-700">
-              Try For Free
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
+            <Link to="/sign-up">
+              <Button className="h-12 rounded-xl bg-blue-600 px-8 text-base hover:bg-blue-700">
+                Try For Free
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
 
             <Button
               variant="outline"
@@ -84,9 +82,7 @@ export default function HeroSection() {
                 Dashboard Image Here
               </p>
 
-              <p className="mt-2 text-sm text-black/50">
-                Add screenshot later
-              </p>
+              <p className="mt-2 text-sm text-black/50">Add screenshot later</p>
             </div>
           </div>
         </div>

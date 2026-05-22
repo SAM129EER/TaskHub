@@ -1,4 +1,4 @@
-import { FolderKanban,  Menu } from "lucide-react";
+import { FolderKanban, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
 export default function Navbar() {
@@ -18,36 +18,36 @@ export default function Navbar() {
 
         {/* NAV LINKS */}
         <nav className="hidden items-center gap-8 md:flex">
-          <a
-            href="#features"
-            className="text-sm text-black/70 transition hover:text-black"
+          <Link
+            to="#features"
+            className="text-md text-black/70 transition hover:text-black"
           >
             Features
-          </a>
+          </Link>
 
-          <a
-            href="#how-it-works"
-            className="text-sm text-black/70 transition hover:text-black"
+          <Link
+            to="#how-it-works"
+            className="text-md text-black/70 transition hover:text-black"
           >
             How It Works
-          </a>
+          </Link>
 
-          <a
-            href="#benefits"
-            className="text-sm text-black/70 transition hover:text-black"
+          <Link
+            to="#benefits"
+            className="text-md text-black/70 transition hover:text-black"
           >
-            Benefits  
-          </a>
+            Benefits
+          </Link>
         </nav>
 
         {/* ACTION BUTTONS */}
         <div className="hidden items-center gap-3 md:flex">
           <Link to="/sign-in">
-            <Button variant="ghost">Log in</Button>
+            <Button variant="ghost" size="lg">Log in</Button>
           </Link>
 
           <Link to="/sign-up">
-            <Button className="rounded-xl bg-blue-600 hover:bg-blue-700">
+            <Button className="rounded-xl bg-blue-600 hover:bg-blue-700 shadow-lg" size="lg">
               Get Started
             </Button>
           </Link>
