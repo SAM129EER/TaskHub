@@ -1,5 +1,5 @@
-// import {db} from "../../db/index.js"
-import {db,usersTable , sessions} from "../../db/schema.js"
+import {db} from "../../db/index.js"
+import { usersTable ,sessions} from "../../db/schema.js"
 import { eq } from "drizzle-orm";
 
 export const findUserByEmail = async (
@@ -18,12 +18,12 @@ export const createUser = async (
   }
 ) => {
   const [user] = await db
-    .insert(usersTable)
-    .values(data)
-    .returning();
-
+  .insert(usersTable)
+  .values(data)
+  .returning();
   return user;
 };
+
 
 export const createSession = async (
   data: {

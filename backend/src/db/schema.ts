@@ -5,19 +5,36 @@ import {
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
-import { drizzle } from 'drizzle-orm/neon-http';
+
 export const usersTable = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(),
+
   name: varchar("name", { length: 255 }).notNull(),
-  email: varchar("email", { length: 255 }).notNull().unique(),
-  password: varchar("password", { length: 255 }).notNull(),
-  emailVerified: boolean("email_verified").default(false).notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+
+  email: varchar("email", { length: 255 })
+    .notNull()
+    .unique(),
+
+  password: varchar("password", { length: 255 })
+    .notNull(),
+
+  emailVerified: boolean("email_verified")
+    .default(false)
+    .notNull(),
+
+  createdAt: timestamp("created_at")
+    .defaultNow()
+    .notNull(),
+
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .notNull(),
 });
 
 export const sessions = pgTable("sessions", {
-  id: uuid("id").defaultRandom().primaryKey(),
+  id: uuid("id")
+    .defaultRandom()
+    .primaryKey(),
 
   userId: uuid("user_id")
     .references(() => usersTable.id, {
@@ -37,14 +54,9 @@ export const sessions = pgTable("sessions", {
     length: 100,
   }),
 
-  expiresAt: timestamp("expires_at").notNull(),
+  expiresAt: timestamp("expires_at")
+    .notNull(),
 
-  createdAt: timestamp("created_at").defaultNow(),
-});
-
-export const db = drizzle(process.env.DATABASE_URL!, {
-  schema: {
-    usersTable,
-    sessions,
-  },
+  createdAt: timestamp("created_at")
+    .defaultNow(),
 });
