@@ -99,9 +99,7 @@ const handleOnSubmit = ()=>{}
                       {...register("email")}
                     />
 
-                    <FieldDescription>
-                      Enter your registered email address
-                    </FieldDescription>
+                 
 
                     {errors.email && (
                       <FieldError>{errors.email.message}</FieldError>
@@ -116,7 +114,7 @@ const handleOnSubmit = ()=>{}
 
                     <Link
                       to="/forgot-password"
-                      className="text-sm font-medium text-primary hover:underline"
+                      className="text-sm font-medium text-blue-600 hover:underline"
                     >
                       Forgot password?
                     </Link>
@@ -140,9 +138,10 @@ const handleOnSubmit = ()=>{}
 
             <Button
               type="submit"
-              className="w-full"
+              className="w-full bg-blue-600 text-white hover:bg-blue-700 cursor-pointer "
             //   disabled={isPending}
             >
+                Sign in
               {/* {isPending && (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               )}

@@ -55,31 +55,31 @@ const SignUp = () => {
     formState: { errors },
   } = form;
 
-  const handleOnSubmit = ()=>{}
+  const handleOnSubmit = () => {};
 
-//   const { mutate, isPending } = useSignUpMutation();
+  //   const { mutate, isPending } = useSignUpMutation();
 
-//   const handleOnSubmit = (values: SignupFormData) => {
-//     mutate(values, {
-//       onSuccess: () => {
-//         toast.success("Email Verification Required", {
-//           description:
-//             "Please check your email for a verification link.",
-//         });
+  //   const handleOnSubmit = (values: SignupFormData) => {
+  //     mutate(values, {
+  //       onSuccess: () => {
+  //         toast.success("Email Verification Required", {
+  //           description:
+  //             "Please check your email for a verification link.",
+  //         });
 
-//         reset();
+  //         reset();
 
-//         navigate("/sign-in");
-//       },
+  //         navigate("/sign-in");
+  //       },
 
-//       onError: (error: any) => {
-//         const errorMessage =
-//           error.response?.data?.message || "Something went wrong";
+  //       onError: (error: any) => {
+  //         const errorMessage =
+  //           error.response?.data?.message || "Something went wrong";
 
-//         toast.error(errorMessage);
-//       },
-//     });
-//   };
+  //         toast.error(errorMessage);
+  //       },
+  //     });
+  //   };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted/40 p-4">
@@ -95,10 +95,7 @@ const SignUp = () => {
         </CardHeader>
 
         <CardContent>
-          <form
-            onSubmit={handleSubmit(handleOnSubmit)}
-            className="space-y-6"
-          >
+          <form onSubmit={handleSubmit(handleOnSubmit)} className="space-y-6">
             <FieldSet>
               <FieldGroup>
                 {/* NAME */}
@@ -112,10 +109,6 @@ const SignUp = () => {
                       autoComplete="name"
                       {...register("name")}
                     />
-
-                    <FieldDescription>
-                      Enter your full name
-                    </FieldDescription>
 
                     {errors.name && (
                       <FieldError>{errors.name.message}</FieldError>
@@ -153,10 +146,6 @@ const SignUp = () => {
                       {...register("password")}
                     />
 
-                    <FieldDescription>
-                      Must be at least 8 characters
-                    </FieldDescription>
-
                     {errors.password && (
                       <FieldError>{errors.password.message}</FieldError>
                     )}
@@ -176,26 +165,25 @@ const SignUp = () => {
                     />
 
                     {errors.confirmPassword && (
-                      <FieldError>
-                        {errors.confirmPassword.message}
-                      </FieldError>
+                      <FieldError>{errors.confirmPassword.message}</FieldError>
                     )}
                   </FieldContent>
                 </Field>
               </FieldGroup>
             </FieldSet>
 
-            {/* <Button
+            <Button
               type="submit"
-              className="w-full"
-              disabled={isPending}
+              className="w-full bg-blue-600 text-white hover:bg-blue-700 cursor-pointer "
+              // disabled={isPending}
             >
-              {isPending && (
+                Create account
+              {/* {isPending && (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              )}
+              )} */}
 
-              {isPending ? "Creating account..." : "Create account"}
-            </Button> */}
+              {/* {isPending ? "Creating account..." : "Create account"} */}
+            </Button>
           </form>
 
           <div className="mt-6 text-center text-sm text-muted-foreground">
