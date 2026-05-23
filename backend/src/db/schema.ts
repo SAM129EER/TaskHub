@@ -5,7 +5,7 @@ import {
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
-
+import { drizzle } from 'drizzle-orm/neon-http';
 export const usersTable = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: varchar("name", { length: 255 }).notNull(),
@@ -40,4 +40,11 @@ export const sessions = pgTable("sessions", {
   expiresAt: timestamp("expires_at").notNull(),
 
   createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const db = drizzle(process.env.DATABASE_URL!, {
+  schema: {
+    usersTable,
+    sessions,
+  },
 });
