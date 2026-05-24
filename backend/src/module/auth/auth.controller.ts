@@ -30,7 +30,6 @@ export const signInController = async (req: Request, res: Response) => {
     secure: false,
     sameSite: "lax",
   });
-  
 
   res.status(200).json({
     success: true,
