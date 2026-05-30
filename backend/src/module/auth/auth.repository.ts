@@ -25,6 +25,5 @@ export const createSession = async (data: {
   expiresAt: Date;
 }) => {
   const [session] = await db.insert(sessions).values(data).returning();
-
   return session;
 };

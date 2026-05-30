@@ -1,4 +1,4 @@
-import { usersSync } from "drizzle-orm/neon";
+
 import ApiError from "../../errors/api-error.js";
 
 import {

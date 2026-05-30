@@ -6,7 +6,6 @@ import { signInSchema } from "./auth.schema.js";
 const router = Router();
 
 router.post("/sign-up", validate(signInSchema), asyncHandler(signUpController));
-
 router.post("/sign-in", validate(signInSchema), asyncHandler(signInController));
 
 export default router;

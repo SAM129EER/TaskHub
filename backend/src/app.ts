@@ -1,4 +1,4 @@
-import express, { urlencoded } from "express";
+import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { errorMiddleware } from "./middleware/error.middleware.js";
@@ -20,9 +20,10 @@ app.get("/", (req, res) => {
     success: true,
     message: "Server is running",
   });
-  console.log("backend running ");
+  console.log("backend running", data);
   // res.send("backend running")
 });
+
 app.use("/api/auth", authRoutes);
 
 app.use(errorMiddleware);
