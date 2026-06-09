@@ -26,12 +26,7 @@ import { forgotPasswordSchema } from "@/lib/schema";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import {
-  ArrowLeft,
-  CheckCircle2,
-  Loader2,
-  MailCheck,
-} from "lucide-react";
+import { ArrowLeft, CheckCircle2, Loader2, MailCheck } from "lucide-react";
 
 import { useState } from "react";
 
@@ -43,9 +38,7 @@ import { toast } from "sonner";
 
 import type { z } from "zod";
 
-type ForgotPasswordFormData = z.infer<
-  typeof forgotPasswordSchema
->;
+type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
 
 const ForgotPassword = () => {
   const [isSuccess, setIsSuccess] = useState(false);
@@ -64,8 +57,7 @@ const ForgotPassword = () => {
     formState: { errors },
   } = form;
 
-
-  const onSubmit = ()=>{}
+  const onSubmit = () => {};
   // const {
   //   mutate: forgotPassword,
   //   isPending,
@@ -112,8 +104,7 @@ const ForgotPassword = () => {
               </CardTitle>
 
               <CardDescription>
-                Enter your email and we’ll send you
-                a password reset link
+                Enter your email and we’ll send you a password reset link
               </CardDescription>
             </div>
           </CardHeader>
@@ -126,40 +117,24 @@ const ForgotPassword = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <h2 className="text-2xl font-semibold">
-                    Check your email
-                  </h2>
+                  <h2 className="text-2xl font-semibold">Check your email</h2>
 
                   <p className="text-sm text-muted-foreground">
-                    We sent you a password reset link.
-                    Please check your inbox and spam
-                    folder.
+                    We sent you a password reset link. Please check your inbox
+                    and spam folder.
                   </p>
                 </div>
 
-                <Button
-                  asChild
-                  variant="outline"
-                  className="mt-2"
-                >
-                  <Link to="/sign-in">
-                    Back to sign in
-                  </Link>
+                <Button asChild variant="outline" className="mt-2">
+                  <Link to="/sign-in">Back to sign in</Link>
                 </Button>
               </div>
             ) : (
-              <form
-                onSubmit={handleSubmit(onSubmit)}
-                className="space-y-6"
-              >
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <FieldSet>
                   <FieldGroup>
-                    <Field
-                      data-invalid={!!errors.email}
-                    >
-                      <FieldLabel>
-                        Email Address
-                      </FieldLabel>
+                    <Field data-invalid={!!errors.email}>
+                      <FieldLabel>Email Address</FieldLabel>
 
                       <FieldContent>
                         <Input
@@ -171,14 +146,11 @@ const ForgotPassword = () => {
                         />
 
                         <FieldDescription>
-                          Enter the email associated
-                          with your account
+                          Enter the email associated with your account
                         </FieldDescription>
 
                         {errors.email && (
-                          <FieldError>
-                            {errors.email.message}
-                          </FieldError>
+                          <FieldError>{errors.email.message}</FieldError>
                         )}
                       </FieldContent>
                     </Field>
@@ -190,7 +162,7 @@ const ForgotPassword = () => {
                   className="w-full"
                   // disabled={isPending}
                 >
-                verify
+                  verify
                   {/* {isPending && (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   )}

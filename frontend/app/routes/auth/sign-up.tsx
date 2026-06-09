@@ -177,11 +177,10 @@ const SignUp = () => {
               className="w-full bg-blue-600 text-white hover:bg-blue-700 cursor-pointer "
               // disabled={isPending}
             >
-                Create account
+              Create account
               {/* {isPending && (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               )} */}
-
               {/* {isPending ? "Creating account..." : "Create account"} */}
             </Button>
           </form>

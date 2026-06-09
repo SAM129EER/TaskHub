@@ -30,7 +30,7 @@ type SignInFormData = z.infer<typeof signInSchema>;
 
 const SignIn = () => {
   const navigate = useNavigate();
-//   const { login } = useAuth();
+  //   const { login } = useAuth();
 
   const form = useForm<SignInFormData>({
     resolver: zodResolver(signInSchema),
@@ -45,27 +45,27 @@ const SignIn = () => {
     handleSubmit,
     formState: { errors },
   } = form;
-const handleOnSubmit = ()=>{}
-//   const { mutate, isPending } = useLoginMutation();
+  const handleOnSubmit = () => {};
+  //   const { mutate, isPending } = useLoginMutation();
 
-//   const handleOnSubmit = (values: SignInFormData) => {
-//     mutate(values, {
-//       onSuccess: (data) => {
-//         login(data);
+  //   const handleOnSubmit = (values: SignInFormData) => {
+  //     mutate(values, {
+  //       onSuccess: (data) => {
+  //         login(data);
 
-//         toast.success("Login successful");
+  //         toast.success("Login successful");
 
-//         navigate("/dashboard");
-//       },
+  //         navigate("/dashboard");
+  //       },
 
-//       onError: (error: any) => {
-//         const errorMessage =
-//           error.response?.data?.message || "Something went wrong";
+  //       onError: (error: any) => {
+  //         const errorMessage =
+  //           error.response?.data?.message || "Something went wrong";
 
-//         toast.error(errorMessage);
-//       },
-//     });
-//   };
+  //         toast.error(errorMessage);
+  //       },
+  //     });
+  //   };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted/40 p-4">
@@ -81,10 +81,7 @@ const handleOnSubmit = ()=>{}
         </CardHeader>
 
         <CardContent>
-          <form
-            onSubmit={handleSubmit(handleOnSubmit)}
-            className="space-y-6"
-          >
+          <form onSubmit={handleSubmit(handleOnSubmit)} className="space-y-6">
             <FieldSet>
               <FieldGroup>
                 {/* EMAIL FIELD */}
@@ -98,8 +95,6 @@ const handleOnSubmit = ()=>{}
                       autoComplete="email"
                       {...register("email")}
                     />
-
-                 
 
                     {errors.email && (
                       <FieldError>{errors.email.message}</FieldError>
@@ -139,9 +134,9 @@ const handleOnSubmit = ()=>{}
             <Button
               type="submit"
               className="w-full bg-blue-600 text-white hover:bg-blue-700 cursor-pointer "
-            //   disabled={isPending}
+              //   disabled={isPending}
             >
-                Sign in
+              Sign in
               {/* {isPending && (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               )}
