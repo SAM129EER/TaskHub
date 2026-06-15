@@ -1,8 +1,4 @@
-import { signUpSchema } from "@/lib/schema";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -10,27 +6,23 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
 import {
   Field,
   FieldContent,
-  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
   FieldSet,
 } from "@/components/ui/field";
-
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-
-import { Link, useNavigate } from "react-router";
-
-// import { useSignUpMutation } from "@/hooks/use-auth";
-
-import { toast } from "sonner";
-
+import { postAuth } from "@/lib/api";
+import { signUpSchema } from "@/lib/schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router";
+import { toast } from "sonner";
+import { z } from "zod";
 
 export type SignupFormData = z.infer<typeof signUpSchema>;
 
@@ -39,7 +31,6 @@ const SignUp = () => {
 
   const form = useForm<SignupFormData>({
     resolver: zodResolver(signUpSchema),
-
     defaultValues: {
       email: "",
       password: "",
@@ -52,34 +43,19 @@ const SignUp = () => {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = form;
 
-  const handleOnSubmit = () => {};
-
-  //   const { mutate, isPending } = useSignUpMutation();
-
-  //   const handleOnSubmit = (values: SignupFormData) => {
-  //     mutate(values, {
-  //       onSuccess: () => {
-  //         toast.success("Email Verification Required", {
-  //           description:
-  //             "Please check your email for a verification link.",
-  //         });
-
-  //         reset();
-
-  //         navigate("/sign-in");
-  //       },
-
-  //       onError: (error: any) => {
-  //         const errorMessage =
-  //           error.response?.data?.message || "Something went wrong";
-
-  //         toast.error(errorMessage);
-  //       },
-  //     });
-  //   };
+  const handleOnSubmit = async (values: SignupFormData) => {
+    try {
+      await postAuth("/api/auth/sign-up", values);
+      toast.success("Account created successfully");
+      reset();
+      navigate("/sign-in");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Something went wrong");
+    }
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted/40 p-4">
@@ -98,7 +74,6 @@ const SignUp = () => {
           <form onSubmit={handleSubmit(handleOnSubmit)} className="space-y-6">
             <FieldSet>
               <FieldGroup>
-                {/* NAME */}
                 <Field data-invalid={!!errors.name}>
                   <FieldLabel>Full Name</FieldLabel>
 
@@ -116,7 +91,6 @@ const SignUp = () => {
                   </FieldContent>
                 </Field>
 
-                {/* EMAIL */}
                 <Field data-invalid={!!errors.email}>
                   <FieldLabel>Email Address</FieldLabel>
 
@@ -134,14 +108,13 @@ const SignUp = () => {
                   </FieldContent>
                 </Field>
 
-                {/* PASSWORD */}
                 <Field data-invalid={!!errors.password}>
                   <FieldLabel>Password</FieldLabel>
 
                   <FieldContent>
                     <Input
                       type="password"
-                      placeholder="••••••••"
+                      placeholder="********"
                       autoComplete="new-password"
                       {...register("password")}
                     />
@@ -152,14 +125,13 @@ const SignUp = () => {
                   </FieldContent>
                 </Field>
 
-                {/* CONFIRM PASSWORD */}
                 <Field data-invalid={!!errors.confirmPassword}>
                   <FieldLabel>Confirm Password</FieldLabel>
 
                   <FieldContent>
                     <Input
                       type="password"
-                      placeholder="••••••••"
+                      placeholder="********"
                       autoComplete="new-password"
                       {...register("confirmPassword")}
                     />
@@ -174,14 +146,13 @@ const SignUp = () => {
 
             <Button
               type="submit"
-              className="w-full bg-blue-600 text-white hover:bg-blue-700 cursor-pointer "
-              // disabled={isPending}
+              className="w-full bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
+              disabled={isSubmitting}
             >
-              Create account
-              {/* {isPending && (
+              {isSubmitting && (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              )} */}
-              {/* {isPending ? "Creating account..." : "Create account"} */}
+              )}
+              {isSubmitting ? "Creating account..." : "Create account"}
             </Button>
           </form>
 

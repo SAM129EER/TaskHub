@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-
 import {
   Card,
   CardContent,
@@ -7,7 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
 import {
   Field,
   FieldContent,
@@ -17,25 +15,13 @@ import {
   FieldLabel,
   FieldSet,
 } from "@/components/ui/field";
-
 import { Input } from "@/components/ui/input";
-
-// import { useForgotPasswordMutation } from "@/hooks/use-auth";
-
 import { forgotPasswordSchema } from "@/lib/schema";
-
 import { zodResolver } from "@hookform/resolvers/zod";
-
-import { ArrowLeft, CheckCircle2, Loader2, MailCheck } from "lucide-react";
-
+import { ArrowLeft, MailCheck } from "lucide-react";
 import { useState } from "react";
-
 import { useForm } from "react-hook-form";
-
 import { Link } from "react-router";
-
-import { toast } from "sonner";
-
 import type { z } from "zod";
 
 type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
@@ -45,7 +31,6 @@ const ForgotPassword = () => {
 
   const form = useForm<ForgotPasswordFormData>({
     resolver: zodResolver(forgotPasswordSchema),
-
     defaultValues: {
       email: "",
     },
@@ -57,33 +42,10 @@ const ForgotPassword = () => {
     formState: { errors },
   } = form;
 
-  const onSubmit = () => {};
-  // const {
-  //   mutate: forgotPassword,
-  //   isPending,
-  // } = useForgotPasswordMutation();
-
-  // const onSubmit = (
-  //   values: ForgotPasswordFormData
-  // ) => {
-  //   forgotPassword(values, {
-  //     onSuccess: () => {
-  //       setIsSuccess(true);
-
-  //       toast.success(
-  //         "Password reset email sent"
-  //       );
-  //     },
-
-  //     onError: (error: any) => {
-  //       const errorMessage =
-  //         error.response?.data?.message ||
-  //         "Something went wrong";
-
-  //       toast.error(errorMessage);
-  //     },
-  //   });
-  // };
+  const onSubmit = () => {
+    // Password reset API is not implemented yet, so show the existing success UI.
+    setIsSuccess(true);
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted/40 p-4">
@@ -104,7 +66,7 @@ const ForgotPassword = () => {
               </CardTitle>
 
               <CardDescription>
-                Enter your email and we’ll send you a password reset link
+                Enter your email and we'll send you a password reset link
               </CardDescription>
             </div>
           </CardHeader>
@@ -141,7 +103,6 @@ const ForgotPassword = () => {
                           type="email"
                           placeholder="email@example.com"
                           autoComplete="email"
-                          // disabled={isPending}
                           {...register("email")}
                         />
 
@@ -157,19 +118,8 @@ const ForgotPassword = () => {
                   </FieldGroup>
                 </FieldSet>
 
-                <Button
-                  type="submit"
-                  className="w-full"
-                  // disabled={isPending}
-                >
-                  verify
-                  {/* {isPending && (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  )}
-
-                  {isPending
-                    ? "Sending reset link..."
-                    : "Send reset link"} */}
+                <Button type="submit" className="w-full">
+                  Verify
                 </Button>
               </form>
             )}

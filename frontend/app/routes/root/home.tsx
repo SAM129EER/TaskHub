@@ -1,5 +1,5 @@
 import HeroSection from "@/modules/LandingPage/hero-section";
-import type { Route } from "../../+types/root";
+import type { Route } from "./+types/home";
 import Navbar from "@/modules/LandingPage/navbar";
 import FeaturesSection from "@/modules/LandingPage/features";
 import HowItWorks from "@/modules/LandingPage/how-it-works";

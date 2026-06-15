@@ -9,16 +9,14 @@ import {
 import {
   Field,
   FieldContent,
-  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
   FieldSet,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-// import { useLoginMutation } from "@/hooks/use-auth";
+import { postAuth } from "@/lib/api";
 import { signInSchema } from "@/lib/schema";
-// import { useAuth } from "@/provider/auth-context";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -30,7 +28,6 @@ type SignInFormData = z.infer<typeof signInSchema>;
 
 const SignIn = () => {
   const navigate = useNavigate();
-  //   const { login } = useAuth();
 
   const form = useForm<SignInFormData>({
     resolver: zodResolver(signInSchema),
@@ -43,29 +40,21 @@ const SignIn = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = form;
-  const handleOnSubmit = () => {};
-  //   const { mutate, isPending } = useLoginMutation();
 
-  //   const handleOnSubmit = (values: SignInFormData) => {
-  //     mutate(values, {
-  //       onSuccess: (data) => {
-  //         login(data);
+  const handleOnSubmit = async (values: SignInFormData) => {
+    try {
+      const data = await postAuth("/api/auth/sign-in", values);
 
-  //         toast.success("Login successful");
-
-  //         navigate("/dashboard");
-  //       },
-
-  //       onError: (error: any) => {
-  //         const errorMessage =
-  //           error.response?.data?.message || "Something went wrong";
-
-  //         toast.error(errorMessage);
-  //       },
-  //     });
-  //   };
+      // Store the token locally until a full auth provider is added.
+      localStorage.setItem("accessToken", data.accessToken);
+      toast.success("Login successful");
+      navigate("/");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Something went wrong");
+    }
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted/40 p-4">
@@ -84,7 +73,6 @@ const SignIn = () => {
           <form onSubmit={handleSubmit(handleOnSubmit)} className="space-y-6">
             <FieldSet>
               <FieldGroup>
-                {/* EMAIL FIELD */}
                 <Field data-invalid={!!errors.email}>
                   <FieldLabel>Email Address</FieldLabel>
 
@@ -102,7 +90,6 @@ const SignIn = () => {
                   </FieldContent>
                 </Field>
 
-                {/* PASSWORD FIELD */}
                 <Field data-invalid={!!errors.password}>
                   <div className="flex items-center justify-between">
                     <FieldLabel>Password</FieldLabel>
@@ -118,7 +105,7 @@ const SignIn = () => {
                   <FieldContent>
                     <Input
                       type="password"
-                      placeholder="••••••••"
+                      placeholder="********"
                       autoComplete="current-password"
                       {...register("password")}
                     />
@@ -133,15 +120,13 @@ const SignIn = () => {
 
             <Button
               type="submit"
-              className="w-full bg-blue-600 text-white hover:bg-blue-700 cursor-pointer "
-              //   disabled={isPending}
+              className="w-full bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
+              disabled={isSubmitting}
             >
-              Sign in
-              {/* {isPending && (
+              {isSubmitting && (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               )}
-
-              {isPending ? "Signing in..." : "Sign in"} */}
+              {isSubmitting ? "Signing in..." : "Sign in"}
             </Button>
           </form>
 
