@@ -9,7 +9,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: "http://localhost:5173/",
+    // Browser origins do not include a trailing slash, so keep this exact.
+    origin: "http://localhost:5173",
     credentials: true,
   }),
 );
