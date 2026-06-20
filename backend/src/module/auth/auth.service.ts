@@ -17,6 +17,7 @@ export const signUpService = async (data: {
   name: string;
   email: string;
   password: string;
+  confirmPassword?: string;
 }) => {
   const userExist = await findUserByEmail(data.email);
 
@@ -26,8 +27,11 @@ export const signUpService = async (data: {
 
   const hashedPassword = await hashPassword(data.password);
 
+  // The confirm password field is validation-only and should never reach the DB.
+  const { confirmPassword, ...userData } = data;
+
   const user = await createUser({
-    ...data,
+    ...userData,
     password: hashedPassword,
   });
 
