@@ -1,26 +1,52 @@
 import {
   boolean,
+  index,
   pgTable,
   timestamp,
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
 
-export const usersTable = pgTable("users", {
-  id: uuid("id").primaryKey().defaultRandom(),
+export const usersTable = pgTable(
+  "users",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
 
-  name: varchar("name", { length: 255 }).notNull(),
+    name: varchar("name", { length: 255 }).notNull(),
 
-  email: varchar("email", { length: 255 }).notNull().unique(),
+    email: varchar("email", { length: 255 }).notNull().unique(),
 
-  password: varchar("password", { length: 255 }).notNull(),
+    password: varchar("password", { length: 255 }).notNull(),
 
-  emailVerified: boolean("email_verified").default(false).notNull(),
+    emailVerified: boolean("email_verified").default(false).notNull(),
 
-  createdAt: timestamp("created_at").defaultNow().notNull(),
+    // Store hashed, single-use email verification tokens and their expiry time.
+    emailVerificationToken: varchar("email_verification_token", {
+      length: 255,
+    }),
 
-  updatedAt: timestamp("updated_at").defaultNow().notNull(),
-});
+    emailVerificationTokenExpiresAt: timestamp(
+      "email_verification_token_expires_at",
+    ),
+
+    // Store hashed, single-use password reset tokens and their expiry time.
+    resetPasswordToken: varchar("reset_password_token", {
+      length: 255,
+    }),
+
+    resetPasswordTokenExpiresAt: timestamp("reset_password_token_expires_at"),
+
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  },
+  (table) => [
+    index("users_email_verification_token_idx").on(
+      table.emailVerificationToken,
+    ),
+    index("users_reset_password_token_idx").on(table.resetPasswordToken),
+  ],
+);
 
 export const sessions = pgTable("sessions", {
   id: uuid("id").defaultRandom().primaryKey(),
