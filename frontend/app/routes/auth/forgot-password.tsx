@@ -16,12 +16,14 @@ import {
   FieldSet,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { postAuth } from "@/lib/api";
 import { forgotPasswordSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, MailCheck } from "lucide-react";
+import { ArrowLeft, Loader2, MailCheck } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router";
+import { toast } from "sonner";
 import type { z } from "zod";
 
 type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
@@ -39,12 +41,18 @@ const ForgotPassword = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = form;
 
-  const onSubmit = () => {
-    // Password reset API is not implemented yet, so show the existing success UI.
-    setIsSuccess(true);
+  const onSubmit = async (values: ForgotPasswordFormData) => {
+    try {
+      await postAuth("/api/auth/forgot-password", values);
+      setIsSuccess(true);
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Something went wrong",
+      );
+    }
   };
 
   return (
@@ -118,8 +126,15 @@ const ForgotPassword = () => {
                   </FieldGroup>
                 </FieldSet>
 
-                <Button type="submit" className="w-full">
-                  Verify
+                <Button
+                  type="submit"
+                  className="w-full bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting && (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  )}
+                  {isSubmitting ? "Sending..." : "Send Reset Link"}
                 </Button>
               </form>
             )}
