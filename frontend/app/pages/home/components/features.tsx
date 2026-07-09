@@ -33,7 +33,7 @@ export default function FeaturesSection() {
   return (
     <section
       id="features"
-      className="py-24"
+      className="py-16 scroll-mt-16"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* HEADING */}
@@ -42,7 +42,7 @@ export default function FeaturesSection() {
             Our Features
           </div>
 
-          <h2 className="mt-6 text-4xl font-black tracking-tight sm:text-5xl">
+          <h2 className="mt-6 text-4xl font-black tracking-tight sm:text-5xl text-slate-900">
             Everything you need to manage tasks effectively
           </h2>
 
@@ -60,7 +60,7 @@ export default function FeaturesSection() {
             return (
               <Card
                 key={feature.title}
-                className="group rounded-3xl border-black/5 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
+                className="group rounded-3xl border-black/5 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl bg-white"
               >
                 <CardContent className="p-8">
                   {/* ICON */}
@@ -69,7 +69,7 @@ export default function FeaturesSection() {
                   </div>
 
                   {/* TITLE */}
-                  <h3 className="mt-6 text-2xl font-bold">
+                  <h3 className="mt-6 text-2xl font-bold text-slate-800">
                     {feature.title}
                   </h3>
 

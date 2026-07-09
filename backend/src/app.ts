@@ -21,7 +21,7 @@ app.get("/", (req, res) => {
     success: true,
     message: "Server is running",
   });
-  console.log("backend running", data);
+  console.log("backend running");
   // res.send("backend running")
 });
 

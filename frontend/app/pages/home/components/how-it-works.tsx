@@ -25,7 +25,7 @@ export default function HowItWorks() {
   return (
     <section
       id="how-it-works"
-      className="bg-gradient-to-b from-slate-50 to-white py-24"
+      className="bg-gradient-to-b from-slate-50 to-white py-24 scroll-mt-16"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* HEADER */}
@@ -34,7 +34,7 @@ export default function HowItWorks() {
             How It Works
           </div>
 
-          <h2 className="mt-6 text-4xl font-black tracking-tight sm:text-5xl">
+          <h2 className="mt-6 text-4xl font-black tracking-tight sm:text-5xl text-slate-900">
             Simple process, powerful results
           </h2>
 
@@ -48,15 +48,15 @@ export default function HowItWorks() {
           {steps.map((item) => (
             <div
               key={item.step}
-              className="relative text-center"
+              className="relative text-center group"
             >
               {/* CIRCLE */}
-              <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-blue-600 text-2xl font-bold text-white shadow-lg shadow-blue-500/30">
+              <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-blue-600 text-2xl font-bold text-white shadow-lg shadow-blue-500/30 transition duration-300 group-hover:scale-110">
                 {item.step}
               </div>
 
               {/* TITLE */}
-              <h3 className="mt-8 text-2xl font-bold">
+              <h3 className="mt-8 text-2xl font-bold text-slate-800">
                 {item.title}
               </h3>
 

@@ -2,7 +2,7 @@ import { FolderKanban } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-black/5 py-16">
+    <footer className="border-t border-black/5 py-16 bg-slate-50/50">
       <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 md:grid-cols-2 lg:grid-cols-5 lg:px-8">
         {/* BRAND */}
         <div className="lg:col-span-2">
@@ -24,39 +24,39 @@ export default function Footer() {
 
         {/* LINKS */}
         <div>
-          <h3 className="font-semibold">Product</h3>
+          <h3 className="font-semibold text-slate-800">Product</h3>
 
           <ul className="mt-6 space-y-4 text-black/60">
-            <li>Features</li>
-            <li>Pricing</li>
-            <li>Integrations</li>
+            <li><a href="#features" className="hover:text-blue-600 transition">Features</a></li>
+            <li><span className="cursor-not-allowed text-black/40">Pricing</span></li>
+            <li><span className="cursor-not-allowed text-black/40">Integrations</span></li>
           </ul>
         </div>
 
         <div>
-          <h3 className="font-semibold">Company</h3>
+          <h3 className="font-semibold text-slate-800">Company</h3>
 
           <ul className="mt-6 space-y-4 text-black/60">
-            <li>About</li>
-            <li>Careers</li>
-            <li>Blog</li>
+            <li><span className="cursor-not-allowed text-black/40">About</span></li>
+            <li><span className="cursor-not-allowed text-black/40">Careers</span></li>
+            <li><span className="cursor-not-allowed text-black/40">Blog</span></li>
           </ul>
         </div>
 
         <div>
-          <h3 className="font-semibold">Legal</h3>
+          <h3 className="font-semibold text-slate-800">Legal</h3>
 
           <ul className="mt-6 space-y-4 text-black/60">
-            <li>Privacy Policy</li>
-            <li>Terms</li>
-            <li>Cookies</li>
+            <li><span className="cursor-not-allowed text-black/40">Privacy Policy</span></li>
+            <li><span className="cursor-not-allowed text-black/40">Terms</span></li>
+            <li><span className="cursor-not-allowed text-black/40">Cookies</span></li>
           </ul>
         </div>
       </div>
 
       {/* COPYRIGHT */}
       <div className="mt-16 border-t border-black/5 pt-8 text-center text-sm text-black/50">
-        © 2026 TaskHub. All rights reserved.
+        © {new Date().getFullYear()} TaskHub. All rights reserved.
       </div>
     </footer>
   );

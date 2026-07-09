@@ -39,17 +39,17 @@ export default function BenefitsSection() {
   return (
     <section
       id="benefits"
-      className="py-24"
+      className="py-24 scroll-mt-16"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="rounded-[40px] bg-gradient-to-br from-slate-50 to-blue-50 p-10 md:p-16">
+        <div className="rounded-[40px] bg-gradient-to-br from-slate-50 to-blue-50 p-10 md:p-16 border border-black/5">
           {/* HEADER */}
           <div className="mx-auto max-w-3xl text-center">
             <div className="inline-flex rounded-full bg-white px-4 py-1 text-sm font-medium text-blue-700 shadow-sm">
               Why Choose TaskHub
             </div>
 
-            <h2 className="mt-6 text-4xl font-black tracking-tight sm:text-5xl">
+            <h2 className="mt-6 text-4xl font-black tracking-tight sm:text-5xl text-slate-900">
               Built for modern teams
             </h2>
 
@@ -65,14 +65,14 @@ export default function BenefitsSection() {
               const Icon = benefit.icon;
 
               return (
-                <div key={benefit.title}>
+                <div key={benefit.title} className="group">
                   {/* ICON */}
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-sm">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-sm border border-black/5 transition duration-300 group-hover:scale-110">
                     <Icon className="h-7 w-7 text-blue-600" />
                   </div>
 
                   {/* TITLE */}
-                  <h3 className="mt-6 text-xl font-bold">
+                  <h3 className="mt-6 text-xl font-bold text-slate-800">
                     {benefit.title}
                   </h3>
 
