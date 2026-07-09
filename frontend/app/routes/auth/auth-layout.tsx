@@ -1,12 +1,7 @@
-import React from "react";
-import { Outlet } from "react-router";
+import AuthLayoutPage from "@/pages/auth/auth-layout-page";
 
 const AuthLayout = () => {
-  return (
-    <main>
-      <Outlet />
-    </main>
-  );
+  return <AuthLayoutPage />;
 };
 
 export default AuthLayout;
