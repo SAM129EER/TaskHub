@@ -1,3 +1,18 @@
+/**
+ * reset-password-page.tsx — Password reset page for TaskHub.
+ *
+ * The user arrives here from the email link which contains a `?token=…`
+ * query parameter. The page validates the token is present, then shows
+ * a form for entering a new password (with confirmation). On success
+ * the user is shown a confirmation message and can navigate to sign‑in.
+ *
+ * Key libraries:
+ *   • react‑hook‑form  — form state & validation
+ *   • zod              — password‑match refinement
+ *   • sonner           — toast notifications
+ *   • postAuth (axios) — sends the new password to the backend
+ */
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -25,14 +40,19 @@ import { Link, useSearchParams, useNavigate } from "react-router";
 import { toast } from "sonner";
 import type { z } from "zod";
 
+/** Infer the form‑data type from the Zod reset‑password schema. */
 type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
 
 const ResetPasswordPage = () => {
+  // Extract the reset token from the URL query string (e.g. ?token=abc123).
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const token = searchParams.get("token") || "";
+
+  // Tracks whether the password was reset successfully.
   const [isSuccess, setIsSuccess] = useState(false);
 
+  // Initialize react‑hook‑form with the reset‑password Zod schema.
   const form = useForm<ResetPasswordFormData>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
@@ -47,18 +67,26 @@ const ResetPasswordPage = () => {
     formState: { errors, isSubmitting },
   } = form;
 
+  /**
+   * onSubmit — Sends the new password along with the reset token
+   * to the backend via axios. On success, shows the confirmation UI.
+   */
   const onSubmit = async (values: ResetPasswordFormData) => {
+    // Guard: ensure a token exists before making the request.
     if (!token) {
       toast.error("Reset token is missing. Please use the link from your email.");
       return;
     }
 
     try {
+      // Post the token + new password to the reset endpoint.
       await postAuth("/api/auth/reset-password", {
         token,
         newPassword: values.newPassword,
         confirmPassword: values.confirmPassword,
       });
+
+      // Switch to the success confirmation view.
       setIsSuccess(true);
     } catch (error) {
       toast.error(
@@ -67,6 +95,8 @@ const ResetPasswordPage = () => {
     }
   };
 
+  // ---------- Invalid / missing token state ----------
+  // If the page was loaded without a token query param, show an error.
   if (!token) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-muted/40 p-4">
@@ -88,10 +118,12 @@ const ResetPasswordPage = () => {
     );
   }
 
+  // ---------- Main form / success view ----------
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted/40 p-4">
       <div className="w-full max-w-md">
         <Card className="border-border/50 shadow-xl">
+          {/* ---------- Header with back‑link ---------- */}
           <CardHeader className="space-y-4">
             <Link
               to="/sign-in"
@@ -113,7 +145,9 @@ const ResetPasswordPage = () => {
           </CardHeader>
 
           <CardContent>
+            {/* ---------- Conditional rendering: success or form ---------- */}
             {isSuccess ? (
+              /* ---- Success confirmation ---- */
               <div className="flex flex-col items-center justify-center space-y-4 py-6 text-center">
                 <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-500/10">
                   <CheckCircle2 className="h-8 w-8 text-green-600" />
@@ -130,6 +164,7 @@ const ResetPasswordPage = () => {
                   </p>
                 </div>
 
+                {/* Navigate the user to sign‑in with the updated credentials. */}
                 <Button
                   className="mt-2 bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
                   onClick={() => navigate("/sign-in")}
@@ -138,9 +173,11 @@ const ResetPasswordPage = () => {
                 </Button>
               </div>
             ) : (
+              /* ---- Reset password form ---- */
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <FieldSet>
                   <FieldGroup>
+                    {/* ---- New password field ---- */}
                     <Field data-invalid={!!errors.newPassword}>
                       <FieldLabel>New Password</FieldLabel>
 
@@ -160,6 +197,7 @@ const ResetPasswordPage = () => {
                       </FieldContent>
                     </Field>
 
+                    {/* ---- Confirm new password field ---- */}
                     <Field data-invalid={!!errors.confirmPassword}>
                       <FieldLabel>Confirm New Password</FieldLabel>
 
@@ -181,6 +219,7 @@ const ResetPasswordPage = () => {
                   </FieldGroup>
                 </FieldSet>
 
+                {/* ---- Submit button with loading state ---- */}
                 <Button
                   type="submit"
                   className="w-full bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
