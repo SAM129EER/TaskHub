@@ -115,5 +115,5 @@ export const sendPasswordResetEmail = async (
     </div>
   `;
 
-  await sendMail(email, "Reset your password – TaskHub", html);
+  await sendMail(email, "Reset your password - TaskHub", html);
 };
