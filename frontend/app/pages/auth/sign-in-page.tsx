@@ -37,6 +37,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
 import { z } from "zod";
+import { useAuth } from "@/lib/auth-context";
 
 /** Infer the form‑data type directly from the Zod schema. */
 type SignInFormData = z.infer<typeof signInSchema>;
@@ -44,6 +45,7 @@ type SignInFormData = z.infer<typeof signInSchema>;
 const SignInPage = () => {
   // Hook for programmatic navigation after successful login.
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   // Initialize react‑hook‑form with Zod validation.
   const form = useForm<SignInFormData>({
@@ -71,12 +73,12 @@ const SignInPage = () => {
       // POST credentials to the backend auth endpoint.
       const data = await postAuth("/api/auth/sign-in", values);
 
-      // Store the token locally until a full auth provider is added.
-      localStorage.setItem("accessToken", data.accessToken);
+      // Persist the token and update global auth state.
+      login(data.accessToken, data.user);
       toast.success("Login successful");
 
-      // Redirect to the dashboard / home page.
-      navigate("/");
+      // Redirect to the dashboard.
+      navigate("/dashboard");
     } catch (error) {
       // Display the error message returned by the API layer.
       toast.error(error instanceof Error ? error.message : "Something went wrong");

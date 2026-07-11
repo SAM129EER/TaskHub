@@ -38,6 +38,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
 import { z } from "zod";
+import { useAuth } from "@/lib/auth-context";
 
 /** Infer the form‑data type from the Zod sign‑up schema. */
 export type SignupFormData = z.infer<typeof signUpSchema>;
@@ -45,6 +46,7 @@ export type SignupFormData = z.infer<typeof signUpSchema>;
 const SignUpPage = () => {
   // Programmatic navigation hook — used to redirect after sign‑up.
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   // Initialize react‑hook‑form with the sign‑up Zod schema.
   const form = useForm<SignupFormData>({
@@ -73,15 +75,17 @@ const SignUpPage = () => {
   const handleOnSubmit = async (values: SignupFormData) => {
     try {
       // Send registration data to the backend.
-      await postAuth("/api/auth/sign-up", values);
+      const data = await postAuth("/api/auth/sign-up", values);
 
-      toast.success("Account created successfully");
+      // Auto-login the newly created user.
+      login(data.accessToken, data.user);
+      toast.success("Account created! Please check your email to verify your account.");
 
       // Clear the form fields to prevent accidental re‑submission.
       reset();
 
-      // Navigate to sign‑in so the user can log in with their new account.
-      navigate("/sign-in");
+      // Navigate to dashboard.
+      navigate("/dashboard");
     } catch (error) {
       // Display the error (e.g. "Email already exists") from the API layer.
       toast.error(error instanceof Error ? error.message : "Something went wrong");
