@@ -7,6 +7,8 @@ import {
   ScrollRestoration,
   type LinksFunction,
 } from "react-router";
+import { AuthProvider } from "./lib/auth-context";
+import { Toaster } from "sonner";
 
 import "./app.css";
 
@@ -49,7 +51,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <AuthProvider>
+      <Outlet />
+      <Toaster position="top-right" richColors />
+    </AuthProvider>
+  );
 }
 
 export function ErrorBoundary({ error }: { error: unknown }) {

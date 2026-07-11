@@ -76,7 +76,8 @@ type AuthPostPath =
   | "/api/auth/reset-password"
   | "/api/auth/verify-email"
   | "/api/auth/refresh-token"
-  | "/api/auth/logout";
+  | "/api/auth/logout"
+  | "/api/auth/resend-verification";
 
 // ---------------------------------------------------------------------------
 // postAuth — Generic POST helper for all authentication endpoints.
