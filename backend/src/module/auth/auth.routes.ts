@@ -8,6 +8,7 @@ import {
   refreshTokenController,
   logoutController,
   getCurrentUserController,
+  resendVerificationController,
 } from "./auth.controller.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
 import { validate } from "../../middleware/validate.middleware.js";
@@ -51,5 +52,8 @@ router.post("/logout", asyncHandler(logoutController));
 
 // Protected – requires a valid access token
 router.get("/me", authenticateToken, asyncHandler(getCurrentUserController));
+
+// Resend verification email – requires a valid access token
+router.post("/resend-verification", authenticateToken, asyncHandler(resendVerificationController));
 
 export default router;

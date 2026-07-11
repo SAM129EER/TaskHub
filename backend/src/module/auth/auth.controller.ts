@@ -8,6 +8,7 @@ import {
   refreshTokenService,
   logoutService,
   getCurrentUserService,
+  resendVerificationService,
 } from "./auth.service.js";
 
 // Cookie options for the refresh token
@@ -147,5 +148,25 @@ export const getCurrentUserController = async (req: Request, res: Response) => {
   res.status(200).json({
     success: true,
     data: { user },
+  });
+};
+
+// ---------- Resend Verification Email ----------
+
+export const resendVerificationController = async (req: Request, res: Response) => {
+  const userId = (req as any).user?.userId;
+
+  if (!userId) {
+    res.status(401).json({
+      success: false,
+      message: "Unauthorized",
+    });
+    return;
+  }
+
+  const result = await resendVerificationService(userId);
+  res.status(200).json({
+    success: true,
+    message: result.message,
   });
 };

@@ -255,3 +255,29 @@ export const getCurrentUserService = async (userId: string) => {
   const { password, ...safeUser } = user;
   return safeUser;
 };
+
+// ---------- Resend Verification Email ----------
+
+export const resendVerificationService = async (userId: string) => {
+  const user = await findUserById(userId);
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  if (user.emailVerified) {
+    throw new ApiError(400, "Email is already verified");
+  }
+
+  // Generate a new token (invalidates the old one automatically)
+  const rawToken = generateRandomToken();
+  const hashedToken = hashToken(rawToken);
+
+  await updateUser(user.id, {
+    emailVerificationToken: hashedToken,
+    emailVerificationTokenExpiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
+  });
+
+  await sendVerificationEmail(user.email, user.name, rawToken);
+
+  return { message: "Verification email sent" };
+};
