@@ -2,12 +2,14 @@ import { useState } from "react";
 import { FolderKanban, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
+import { useAuth } from "@/lib/auth-context";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { isAuthenticated, logout } = useAuth();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-black/5 bg-white/80 backdrop-blur-xl transition-all duration-300">
+    <header className="sticky h-16 top-0 z-50 border-b border-black/5 bg-white/80 backdrop-blur-xl transition-all duration-300">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* LOGO */}
         <div className="flex items-center gap-3">
@@ -46,22 +48,41 @@ export default function Navbar() {
 
         {/* ACTION BUTTONS (DESKTOP) */}
         <div className="hidden items-center gap-3 md:flex">
-          <Link to="/sign-in">
-            <Button variant="ghost" size="lg" className="hover:bg-slate-100 rounded-xl transition duration-200">
-              Log in
-            </Button>
-          </Link>
+          {isAuthenticated ? (
+            <>
+              <Link to="/dashboard">
+                <Button variant="ghost" size="lg" className="hover:bg-slate-100 rounded-xl transition duration-200 cursor-pointer">
+                  Dashboard
+                </Button>
+              </Link>
+              <Button
+                onClick={() => logout()}
+                className="rounded-xl bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 transition duration-200 text-white cursor-pointer"
+                size="lg"
+              >
+                Log out
+              </Button>
+            </>
+          ) : (
+            <>
+              <Link to="/sign-in">
+                <Button variant="ghost" size="lg" className="hover:bg-slate-100 rounded-xl transition duration-200 cursor-pointer">
+                  Log in
+                </Button>
+              </Link>
 
-          <Link to="/sign-up">
-            <Button className="rounded-xl bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 transition duration-200 text-white" size="lg">
-              Get Started
-            </Button>
-          </Link>
+              <Link to="/sign-up">
+                <Button className="rounded-xl bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 transition duration-200 text-white cursor-pointer" size="lg">
+                  Get Started
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
 
         {/* MOBILE MENU TOGGLE */}
         <button
-          className="md:hidden p-2 text-black/70 hover:text-black focus:outline-none transition"
+          className="md:hidden p-2 text-black/70 hover:text-black focus:outline-none transition cursor-pointer"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle menu"
         >
@@ -95,16 +116,37 @@ export default function Navbar() {
               Benefits
             </a>
             <div className="mt-4 flex flex-col gap-3 pt-4 border-t border-black/5">
-              <Link to="/sign-in" onClick={() => setMobileMenuOpen(false)}>
-                <Button variant="outline" className="w-full rounded-xl">
-                  Log in
-                </Button>
-              </Link>
-              <Link to="/sign-up" onClick={() => setMobileMenuOpen(false)}>
-                <Button className="w-full rounded-xl bg-blue-600 text-white hover:bg-blue-700">
-                  Get Started
-                </Button>
-              </Link>
+              {isAuthenticated ? (
+                <>
+                  <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)}>
+                    <Button variant="outline" className="w-full h-14 text-lg rounded-xl cursor-pointer">
+                      Dashboard
+                    </Button>
+                  </Link>
+                  <Button
+                    onClick={() => {
+                      logout();
+                      setMobileMenuOpen(false);
+                    }}
+                    className="w-full h-14 text-lg rounded-xl bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
+                  >
+                    Log out
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Link to="/sign-in" onClick={() => setMobileMenuOpen(false)}>
+                    <Button variant="outline" className="w-full h-14 text-lg rounded-xl cursor-pointer">
+                      Log in
+                    </Button>
+                  </Link>
+                  <Link to="/sign-up" onClick={() => setMobileMenuOpen(false)}>
+                    <Button className="w-full h-14 text-lg rounded-xl bg-blue-600 text-white hover:bg-blue-700 cursor-pointer">
+                      Get Started
+                    </Button>
+                  </Link>
+                </>
+              )}
             </div>
           </nav>
         </div>

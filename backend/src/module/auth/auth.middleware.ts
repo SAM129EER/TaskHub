@@ -5,7 +5,7 @@ import { verifyAccessToken } from "./auth.utils.js";
  * Middleware that protects routes by verifying the access token
  * from the Authorization header (Bearer <token>).
  * On success, attaches `req.user = { userId }` for downstream handlers.
- */
+ /*/
 export const authenticateToken = (
   req: Request,
   res: Response,
