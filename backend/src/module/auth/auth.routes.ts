@@ -54,6 +54,10 @@ router.post("/logout", asyncHandler(logoutController));
 router.get("/me", authenticateToken, asyncHandler(getCurrentUserController));
 
 // Resend verification email – requires a valid access token
-router.post("/resend-verification", authenticateToken, asyncHandler(resendVerificationController));
+router.post(
+  "/resend-verification",
+  authenticateToken,
+  asyncHandler(resendVerificationController),
+);
 
 export default router;

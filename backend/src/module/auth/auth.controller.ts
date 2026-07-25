@@ -27,7 +27,8 @@ export const signUpController = async (req: Request, res: Response) => {
   res.cookie("refreshToken", result.refreshToken, REFRESH_COOKIE_OPTIONS);
   res.status(201).json({
     success: true,
-    message: "User created successfully. Please check your email to verify your account.",
+    message:
+      "User created successfully. Please check your email to verify your account.",
     data: {
       user: result.user,
       accessToken: result.accessToken,
@@ -153,7 +154,10 @@ export const getCurrentUserController = async (req: Request, res: Response) => {
 
 // ---------- Resend Verification Email ----------
 
-export const resendVerificationController = async (req: Request, res: Response) => {
+export const resendVerificationController = async (
+  req: Request,
+  res: Response,
+) => {
   const userId = (req as any).user?.userId;
 
   if (!userId) {

@@ -22,10 +22,7 @@ import {
   verifyRefreshToken,
 } from "./auth.utils.js";
 
-import {
-  sendVerificationEmail,
-  sendPasswordResetEmail,
-} from "./auth.mail.js";
+import { sendVerificationEmail, sendPasswordResetEmail } from "./auth.mail.js";
 
 // ---------- Sign Up ----------
 
@@ -145,7 +142,10 @@ export const forgotPasswordService = async (email: string) => {
 
   // Don't reveal whether the email exists – always return success.
   if (!user) {
-    return { message: "If an account with that email exists, a reset link has been sent" };
+    return {
+      message:
+        "If an account with that email exists, a reset link has been sent",
+    };
   }
 
   const rawToken = generateRandomToken();
@@ -159,7 +159,9 @@ export const forgotPasswordService = async (email: string) => {
   // Send reset email
   await sendPasswordResetEmail(user.email, user.name, rawToken);
 
-  return { message: "If an account with that email exists, a reset link has been sent" };
+  return {
+    message: "If an account with that email exists, a reset link has been sent",
+  };
 };
 
 // ---------- Reset Password ----------
