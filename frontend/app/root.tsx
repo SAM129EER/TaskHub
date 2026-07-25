@@ -10,6 +10,9 @@ import {
 import { AuthProvider } from "./lib/auth-context";
 import { Toaster } from "sonner";
 
+import { SuspenseBoundary } from "./components/suspense-boundary";
+import { PageLoader } from "./components/ui/page-loader";
+
 import "./app.css";
 
 // Root route types are not generated in this setup, so use React Router's public type.
@@ -50,10 +53,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
+export function HydrateFallback() {
+  return <PageLoader className="min-h-screen" label="Initializing TaskHub..." />;
+}
+
 export default function App() {
   return (
     <AuthProvider>
-      <Outlet />
+      <SuspenseBoundary className="min-h-screen">
+        <Outlet />
+      </SuspenseBoundary>
       <Toaster position="top-right" richColors />
     </AuthProvider>
   );

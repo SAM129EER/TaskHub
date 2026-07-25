@@ -8,22 +8,23 @@
 
 import { Navigate, Outlet } from "react-router";
 import { useAuth } from "@/lib/auth-context";
-import { Loader2 } from "lucide-react";
+import { PageLoader } from "@/components/ui/page-loader";
+import { SuspenseBoundary } from "@/components/suspense-boundary";
 
 export default function GuestRoute() {
   const { isAuthenticated, isLoading } = useAuth();
 
   if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-      </div>
-    );
+    return <PageLoader className="min-h-screen" label="Checking authorization..." />;
   }
 
   if (isAuthenticated) {
     return <Navigate to="/" replace />;
   }
 
-  return <Outlet />;
+  return (
+    <SuspenseBoundary>
+      <Outlet />
+    </SuspenseBoundary>
+  );
 }
