@@ -1,9 +1,8 @@
 import Navbar from "./components/navbar";
 import HeroSection from "./components/hero-section";
 import LogoMarquee from "./components/logo-marquee";
-import InteractiveSearch from "./components/interactive-search";
 import FeaturesSection from "./components/features";
-import AIReachSection from "./components/ai-reach-section";
+import HowItWorks from "./components/how-it-works";
 import FAQSection from "./components/faq-section";
 import CTASection from "./components/cta-section";
 import Footer from "./components/footer";
@@ -14,9 +13,8 @@ export default function HomePage() {
       <Navbar />
       <HeroSection />
       <LogoMarquee />
-      <InteractiveSearch />
       <FeaturesSection />
-      <AIReachSection />
+      <HowItWorks />
       <FAQSection />
       <CTASection />
       <Footer />

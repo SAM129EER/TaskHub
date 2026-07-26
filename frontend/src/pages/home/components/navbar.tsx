@@ -1,32 +1,18 @@
-import { useState, useRef, useEffect } from "react";
-import { Menu, X, ChevronDown, UserCheck, Briefcase } from "lucide-react";
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/lib/auth-context";
 
 const links = [
-  { href: "#for-companies", label: "For Companies" },
-  { href: "#for-contributors", label: "For Contributors" },
-  { href: "#ai-reach", label: "AI Sourcing" },
+  { href: "#features", label: "Features" },
+  { href: "#how-it-works", label: "How It Works" },
   { href: "#faq", label: "FAQ" },
 ];
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [signupMenuOpen, setSignupMenuOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const { isAuthenticated, logout } = useAuth();
-
-  // Close dropdown on outside click
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setSignupMenuOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
 
   return (
     <header className="sticky top-0 z-50 border-b border-black/10 bg-[#FAF9F6]/90 backdrop-blur-md">
@@ -41,8 +27,8 @@ export default function Navbar() {
           </span>
         </Link>
 
-        {/* Centered Navigation Links */}
-        <nav className="hidden items-center gap-7 md:flex">
+        {/* Centered Nav Links */}
+        <nav className="hidden items-center gap-8 md:flex">
           {links.map((item) => (
             <a
               key={item.href}
@@ -54,7 +40,7 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* Auth CTA Controls */}
+        {/* Action Buttons */}
         <div className="hidden items-center gap-3 md:flex">
           {isAuthenticated ? (
             <>
@@ -77,52 +63,11 @@ export default function Navbar() {
                   Log in
                 </Button>
               </Link>
-
-              {/* Wellfound Style Interactive Dropdown Menu */}
-              <div className="relative" ref={dropdownRef}>
-                <Button
-                  onClick={() => setSignupMenuOpen((prev) => !prev)}
-                  className="flex items-center gap-1.5 rounded-full bg-[#E9357B] px-5 text-sm font-semibold text-white shadow-sm hover:bg-[#d82b70]"
-                >
-                  Sign up
-                  <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${signupMenuOpen ? "rotate-180" : ""}`} />
+              <Link to="/sign-up">
+                <Button className="rounded-full bg-[#E9357B] px-5 text-sm font-semibold text-white shadow-sm hover:bg-[#d82b70]">
+                  Get started free
                 </Button>
-
-                {signupMenuOpen && (
-                  <div className="absolute right-0 top-full mt-2 w-64 rounded-2xl border border-black/10 bg-white p-2 shadow-xl ring-1 ring-black/5 transition-all z-50">
-                    <div className="px-3 py-2 text-[11px] font-mono font-semibold tracking-wider text-black/40 uppercase">
-                      Select Account Type
-                    </div>
-                    <Link
-                      to="/sign-up?role=contributor"
-                      onClick={() => setSignupMenuOpen(false)}
-                      className="flex items-start gap-3 rounded-xl p-2.5 transition hover:bg-[#FAF9F6] text-left group"
-                    >
-                      <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#E9357B]/10 text-[#E9357B] group-hover:bg-[#E9357B] group-hover:text-white transition">
-                        <UserCheck className="h-4 w-4" />
-                      </div>
-                      <div>
-                        <div className="text-sm font-semibold text-black">I'm looking to work</div>
-                        <div className="text-xs text-black/55">Complete tasks & earn</div>
-                      </div>
-                    </Link>
-
-                    <Link
-                      to="/sign-up?role=company"
-                      onClick={() => setSignupMenuOpen(false)}
-                      className="flex items-start gap-3 rounded-xl p-2.5 transition hover:bg-[#FAF9F6] text-left group"
-                    >
-                      <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-black/5 text-black group-hover:bg-black group-hover:text-white transition">
-                        <Briefcase className="h-4 w-4" />
-                      </div>
-                      <div>
-                        <div className="text-sm font-semibold text-black">I'm looking to hire</div>
-                        <div className="text-xs text-black/55">Post tasks & manage teams</div>
-                      </div>
-                    </Link>
-                  </div>
-                )}
-              </div>
+              </Link>
             </>
           )}
         </div>
@@ -137,7 +82,7 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Mobile Menu Drawer */}
+      {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="border-t border-black/10 bg-[#FAF9F6] px-4 py-5 md:hidden">
           <nav className="flex flex-col gap-4">
@@ -178,7 +123,7 @@ export default function Navbar() {
                   </Link>
                   <Link to="/sign-up" onClick={() => setMobileMenuOpen(false)}>
                     <Button className="h-11 w-full rounded-full bg-[#E9357B] text-white font-semibold">
-                      Sign up free
+                      Get started free
                     </Button>
                   </Link>
                 </>

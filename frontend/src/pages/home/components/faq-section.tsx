@@ -10,27 +10,27 @@ const faqs: FAQItem[] = [
   {
     question: "What is TaskHub?",
     answer:
-      "TaskHub is the AI task marketplace and project workspace for modern startups. Teams post tasks, deploy AI sourcing agents, or assign work to verified contributors with automated deliverable verification.",
+      "TaskHub is a calm, focused task management workspace for modern product teams and individuals. It brings task organization, sprint tracking, ownership, and deliverable verification into one clean interface.",
   },
   {
-    question: "Is TaskHub free to post tasks?",
+    question: "Is TaskHub free to use?",
     answer:
-      "Yes! Posting unlimited tasks, receiving proposals, and managing your team workspace is $0 forever. Optional paid features include promoted task listings, AI Reach sourcing agents, and Autopilot managed recruiting.",
+      "Yes! Creating workspaces, managing task boards, assigning owners, and tracking progress is completely free.",
   },
   {
-    question: "Is TaskHub free for contributors & freelancers?",
+    question: "How does deliverable verification work?",
     answer:
-      "Yes. Creating a profile, browsing open tasks, submitting proposals, and getting paid directly is always free for candidates and contributors.",
+      "When a task is marked ready, TaskHub allows project leads or reviewers to check acceptance criteria before officially closing out the task as Done.",
   },
   {
-    question: "How does AI Task Sourcing work?",
+    question: "Can I switch between Kanban and List views?",
     answer:
-      "TaskHub Reach uses AI agents to continuously scan candidate portfolios, parse GitHub activity, and match exact technical requirements to available talent, sending personalized pitches on autopilot.",
+      "Yes. You can toggle between column-based Kanban boards and high-density list views depending on how you prefer to view your sprint work.",
   },
   {
-    question: "How are payments and deliverable verification handled?",
+    question: "How does TaskHub help reduce team noise?",
     answer:
-      "All task payments are protected in secure escrow. Funds are automatically verified and released once PR acceptance criteria or milestone checks pass.",
+      "TaskHub keeps status, priority, ownership, and deliverable notes right on the task card, eliminating the need for constant check-in meetings or fragmented chat threads.",
   },
 ];
 
@@ -46,14 +46,14 @@ export default function FAQSection() {
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <div className="text-center">
           <span className="font-mono text-xs font-semibold uppercase tracking-widest text-[#E9357B]">
-            Questions & Answers
+            FREQUENTLY ASKED QUESTIONS
           </span>
           <h2 className="mt-3 text-4xl font-semibold tracking-tight text-black sm:text-5xl">
             Everything you need <span className="font-serif-accent italic font-normal text-[#E9357B]">to know.</span>
           </h2>
         </div>
 
-        {/* Interactive FAQ Accordion List */}
+        {/* FAQ Accordion */}
         <div className="mt-12 space-y-4">
           {faqs.map((faq, index) => {
             const isOpen = openIndex === index;
