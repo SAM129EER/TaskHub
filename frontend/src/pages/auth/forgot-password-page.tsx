@@ -9,7 +9,6 @@ import {
 import {
   Field,
   FieldContent,
-  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
@@ -52,42 +51,43 @@ const ForgotPasswordPage = () => {
   };
 
   return (
-    <main className="min-h-screen bg-[#fbfaf7] px-4 py-10 sm:px-6">
-      <div className="mx-auto flex min-h-[calc(100vh-5rem)] max-w-xl flex-col justify-center">
+    <main className="min-h-screen bg-[#FAF9F6] px-4 py-10 sm:px-6">
+      <div className="mx-auto flex min-h-[calc(100vh-5rem)] max-w-md flex-col justify-center">
         <Link
           to="/"
-          className="mb-8 inline-flex w-fit items-center gap-2 text-sm font-medium text-black/60 transition hover:text-[#E9357B]"
+          className="mb-6 inline-flex w-fit items-center gap-2 text-sm font-semibold text-black/60 transition hover:text-[#E9357B]"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to TaskHub
         </Link>
 
-        <Card className="rounded-xl border-black/10 bg-white shadow-sm">
-          <CardHeader className="gap-2 p-6 pb-3">
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#E9357B]">
-              Account recovery
-            </p>
-            <CardTitle className="text-3xl font-semibold tracking-tight text-black">
+        <Card className="rounded-3xl border border-black/10 bg-white p-2 shadow-xl">
+          <CardHeader className="gap-2 p-6 pb-2 text-center">
+            {/* Logo Brand */}
+            <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-xl bg-black text-white font-extrabold text-xl shadow-sm">
+              T
+            </div>
+            <CardTitle className="text-3xl font-extrabold tracking-tight text-black">
               Forgot password?
             </CardTitle>
-            <CardDescription className="text-base leading-7">
+            <CardDescription className="text-base text-black/60 font-medium">
               Enter your email and we&apos;ll send a reset link.
             </CardDescription>
           </CardHeader>
 
-          <CardContent className="p-6 pt-3">
+          <CardContent className="p-6 pt-4">
             {isSuccess ? (
               <div className="text-center">
                 <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#E9357B]/10">
                   <MailCheck className="h-7 w-7 text-[#E9357B]" />
                 </div>
-                <h2 className="mt-5 text-2xl font-semibold text-black">
+                <h2 className="mt-5 text-2xl font-bold text-black">
                   Check your email
                 </h2>
-                <p className="mx-auto mt-3 max-w-sm text-sm leading-7 text-black/60">
-                  If the account exists, a reset link has been sent.
+                <p className="mx-auto mt-3 max-w-sm text-sm text-black/60">
+                  If an account exists for that email, a reset link has been sent.
                 </p>
-                <Button asChild variant="outline" className="mt-6 h-11 rounded-md">
+                <Button asChild variant="outline" className="mt-6 h-12 w-full rounded-full font-bold">
                   <Link to="/sign-in">Back to sign in</Link>
                 </Button>
               </div>
@@ -96,18 +96,15 @@ const ForgotPasswordPage = () => {
                 <FieldSet>
                   <FieldGroup>
                     <Field data-invalid={!!errors.email}>
-                      <FieldLabel>Email Address</FieldLabel>
+                      <FieldLabel className="text-sm font-bold text-black">Email Address</FieldLabel>
                       <FieldContent>
                         <Input
                           type="email"
-                          placeholder="email@example.com"
+                          placeholder="you@company.com"
                           autoComplete="email"
-                          className="h-12 rounded-md"
+                          className="h-12 rounded-xl border-black/15 bg-[#FAF9F6] text-base focus:border-[#E9357B] focus:ring-1 focus:ring-[#E9357B]"
                           {...register("email")}
                         />
-                        <FieldDescription>
-                          Use the email linked to your TaskHub account.
-                        </FieldDescription>
                         {errors.email && <FieldError>{errors.email.message}</FieldError>}
                       </FieldContent>
                     </Field>
@@ -116,7 +113,7 @@ const ForgotPasswordPage = () => {
 
                 <Button
                   type="submit"
-                  className="h-12 w-full rounded-md bg-[#E9357B] text-base font-semibold text-white hover:bg-[#d82b70]"
+                  className="h-12 w-full rounded-full bg-[#E9357B] text-base font-bold text-white shadow-md transition hover:bg-[#d82b70]"
                   disabled={isSubmitting}
                 >
                   {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

@@ -64,26 +64,26 @@ const ResetPasswordPage = () => {
   };
 
   return (
-    <main className="min-h-screen bg-[#fbfaf7] px-4 py-10 sm:px-6">
-      <div className="mx-auto flex min-h-[calc(100vh-5rem)] max-w-xl flex-col justify-center">
+    <main className="min-h-screen bg-[#FAF9F6] px-4 py-10 sm:px-6">
+      <div className="mx-auto flex min-h-[calc(100vh-5rem)] max-w-md flex-col justify-center">
         <Link
           to="/"
-          className="mb-8 inline-flex w-fit items-center gap-2 text-sm font-medium text-black/60 transition hover:text-[#E9357B]"
+          className="mb-6 inline-flex w-fit items-center gap-2 text-sm font-semibold text-black/60 transition hover:text-[#E9357B]"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to TaskHub
         </Link>
 
-        <Card className="rounded-xl border-black/10 bg-white shadow-sm">
+        <Card className="rounded-3xl border border-black/10 bg-white p-2 shadow-xl">
           {!token ? (
             <CardContent className="p-6 text-center">
-              <h1 className="text-3xl font-semibold tracking-tight text-black">
+              <h1 className="text-2xl font-bold tracking-tight text-black">
                 Invalid reset link
               </h1>
-              <p className="mx-auto mt-3 max-w-sm leading-7 text-black/60">
+              <p className="mx-auto mt-3 max-w-sm text-sm text-black/60">
                 The password reset link is invalid or has expired.
               </p>
-              <Button asChild variant="outline" className="mt-6 h-11 rounded-md">
+              <Button asChild variant="outline" className="mt-6 h-12 w-full rounded-full font-bold">
                 <Link to="/forgot-password">Request new link</Link>
               </Button>
             </CardContent>
@@ -92,14 +92,14 @@ const ResetPasswordPage = () => {
               <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#E9357B]/10">
                 <CheckCircle2 className="h-7 w-7 text-[#E9357B]" />
               </div>
-              <h1 className="mt-6 text-3xl font-semibold tracking-tight text-black">
-                Password reset
+              <h1 className="mt-6 text-2xl font-bold tracking-tight text-black">
+                Password reset!
               </h1>
-              <p className="mx-auto mt-3 max-w-sm leading-7 text-black/60">
-                Your password has been updated. You can now sign in.
+              <p className="mx-auto mt-3 max-w-sm text-sm text-black/60">
+                Your password has been updated successfully. You can now sign in.
               </p>
               <Button
-                className="mt-6 h-11 rounded-md bg-[#E9357B] text-white hover:bg-[#d82b70]"
+                className="mt-6 h-12 w-full rounded-full bg-[#E9357B] text-base font-bold text-white shadow-md hover:bg-[#d82b70]"
                 onClick={() => navigate("/sign-in")}
               >
                 Go to sign in
@@ -107,30 +107,30 @@ const ResetPasswordPage = () => {
             </CardContent>
           ) : (
             <>
-              <CardHeader className="gap-2 p-6 pb-3">
-                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#E9357B]">
-                  Secure reset
-                </p>
-                <CardTitle className="text-3xl font-semibold tracking-tight text-black">
+              <CardHeader className="gap-2 p-6 pb-2 text-center">
+                <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-xl bg-black text-white font-extrabold text-xl shadow-sm">
+                  T
+                </div>
+                <CardTitle className="text-3xl font-extrabold tracking-tight text-black">
                   Choose a new password
                 </CardTitle>
-                <CardDescription className="text-base leading-7">
-                  Enter and confirm your new password.
+                <CardDescription className="text-base text-black/60 font-medium">
+                  Enter and confirm your new password below.
                 </CardDescription>
               </CardHeader>
 
-              <CardContent className="p-6 pt-3">
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+              <CardContent className="p-6 pt-4">
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                   <FieldSet>
                     <FieldGroup className="space-y-4">
                       <Field data-invalid={!!errors.newPassword}>
-                        <FieldLabel>New Password</FieldLabel>
+                        <FieldLabel className="text-sm font-bold text-black">New Password</FieldLabel>
                         <FieldContent>
                           <Input
                             type="password"
-                            placeholder="********"
+                            placeholder="••••••••"
                             autoComplete="new-password"
-                            className="h-12 rounded-md"
+                            className="h-12 rounded-xl border-black/15 bg-[#FAF9F6] text-base focus:border-[#E9357B] focus:ring-1 focus:ring-[#E9357B]"
                             {...register("newPassword")}
                           />
                           {errors.newPassword && (
@@ -140,13 +140,13 @@ const ResetPasswordPage = () => {
                       </Field>
 
                       <Field data-invalid={!!errors.confirmPassword}>
-                        <FieldLabel>Confirm New Password</FieldLabel>
+                        <FieldLabel className="text-sm font-bold text-black">Confirm New Password</FieldLabel>
                         <FieldContent>
                           <Input
                             type="password"
-                            placeholder="********"
+                            placeholder="••••••••"
                             autoComplete="new-password"
-                            className="h-12 rounded-md"
+                            className="h-12 rounded-xl border-black/15 bg-[#FAF9F6] text-base focus:border-[#E9357B] focus:ring-1 focus:ring-[#E9357B]"
                             {...register("confirmPassword")}
                           />
                           {errors.confirmPassword && (
@@ -159,7 +159,7 @@ const ResetPasswordPage = () => {
 
                   <Button
                     type="submit"
-                    className="h-12 w-full rounded-md bg-[#E9357B] text-base font-semibold text-white hover:bg-[#d82b70]"
+                    className="h-12 w-full rounded-full bg-[#E9357B] text-base font-bold text-white shadow-md transition hover:bg-[#d82b70]"
                     disabled={isSubmitting}
                   >
                     {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
