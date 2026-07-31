@@ -1,4 +1,4 @@
-import { ArrowRight, CheckCircle2, FolderKanban, Clock, Sparkles, CheckSquare } from "lucide-react";
+import { ArrowRight, CheckCircle2, FolderKanban, CheckSquare } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
@@ -7,35 +7,6 @@ export default function HeroSection() {
     <section className="relative overflow-hidden border-b border-black/10 bg-[#FAF9F6] pt-14 pb-16 sm:pt-20 sm:pb-24">
       {/* Background Radial Glow */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(640px_360px_at_10%_12%,rgba(233,53,123,0.08),transparent_65%),radial-gradient(640px_360px_at_90%_16%,rgba(24,22,22,0.06),transparent_65%)]" />
-
-      {/* Flanking Floating Task Activity Chips */}
-      <div className="hidden xl:block">
-        {/* Left Floating Chips */}
-        <div className="absolute left-[4%] top-[22%] z-10 flex items-center gap-2 rounded-full border border-black/10 bg-white px-4 py-2 text-xs font-semibold text-black shadow-lg animate-drift-slow">
-          <span className="h-2 w-2 rounded-full bg-[#06D6A0] shadow-[0_0_8px_rgba(6,214,160,0.6)]" />
-          <span>Sprint Review completed</span>
-          <span className="font-normal text-black/50">· 2m ago</span>
-        </div>
-
-        <div className="absolute left-[6%] top-[55%] z-10 flex items-center gap-2 rounded-full border border-[#E9357B]/20 bg-white px-4 py-2 text-xs font-semibold text-black shadow-lg animate-drift-fast">
-          <CheckCircle2 className="h-4 w-4 text-[#E9357B]" />
-          <span>QA verified deliverable</span>
-          <span className="font-normal text-black/50">· just now</span>
-        </div>
-
-        {/* Right Floating Chips */}
-        <div className="absolute right-[4%] top-[25%] z-10 flex items-center gap-2 rounded-full border border-black/10 bg-white px-4 py-2 text-xs font-semibold text-black shadow-lg animate-drift-fast">
-          <Clock className="h-4 w-4 text-amber-500" />
-          <span>API Handoff task</span>
-          <span className="font-mono text-xs font-bold text-[#E9357B]">Due 4 PM</span>
-        </div>
-
-        <div className="absolute right-[7%] top-[58%] z-10 flex items-center gap-2 rounded-full border border-black/10 bg-white px-4 py-2 text-xs font-semibold text-black shadow-lg animate-drift-slow">
-          <Sparkles className="h-4 w-4 text-blue-600" />
-          <span>14 tasks completed today</span>
-          <span className="font-normal text-black/50">· live</span>
-        </div>
-      </div>
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Main Hero Content */}
@@ -48,7 +19,7 @@ export default function HeroSection() {
             TaskHub brings tasks, sprint ownership, deliverable verification, and team momentum into one clean workspace.
           </p>
 
-          {/* Hero Buttons: Pink (#E9357B) & Pure White (#FFFFFF) - No Gray! */}
+          {/* Hero Buttons: Pink (#E9357B) & Pure White (#FFFFFF) */}
           <div className="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link to="/sign-up">
               <Button className="h-14 rounded-full bg-[#E9357B] px-9 text-lg font-bold text-white shadow-lg transition duration-200 hover:bg-[#d82b70] hover:shadow-xl">
