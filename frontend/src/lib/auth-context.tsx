@@ -1,11 +1,3 @@
-/**
- * auth-context.tsx — Global authentication state for TaskHub.
- *
- * Provides an AuthProvider that wraps the app and exposes auth state
- * (user, isLoading, isAuthenticated) plus actions (login, logout,
- * refreshUser) via the useAuth() hook.
- */
-
 import {
   createContext,
   useContext,

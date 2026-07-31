@@ -19,7 +19,7 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Single in-flight token refresh promise
+
 let isRefreshing = false;
 let failedQueue: Array<{
   resolve: (token: string) => void;
@@ -37,7 +37,7 @@ const processQueue = (error: unknown, token: string | null = null) => {
   failedQueue = [];
 };
 
-// Response interceptor for automatic 401 token refresh
+
 api.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {

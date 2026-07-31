@@ -1,27 +1,16 @@
-/**
- * schema.ts — Zod validation schemas for all frontend forms.
- *
- * Each schema is used with `@hookform/resolvers/zod` inside react‑hook‑form
- * so that form validation is declarative, type‑safe, and consistent with
- * the constraints the backend also enforces.
- */
 
 import { z } from "zod";
 
-// ---------------------------------------------------------------------------
-// Auth schemas — used on the sign‑in, sign‑up, and password‑reset pages.
-// ---------------------------------------------------------------------------
 
-/** Schema for the sign‑in form (email + password). */
 export const signInSchema = z.object({
-  email: z.string().email("Invalid email address"),
+  email: z.email("Invalid email address"),
   password: z.string().min(6, "Password is required"),
 });
 
 /** Schema for the sign‑up form with a password‑confirmation check. */
 export const signUpSchema = z
   .object({
-    email: z.string().email("Invalid email address"),
+    email: z.email("Invalid email address"),
     password: z.string().min(8, "Password must be 8 characters"),
     name: z.string().min(3, "Name must be at least 3 characters"),
     confirmPassword: z.string().min(8, "Password must be 8 characters"),
@@ -46,7 +35,7 @@ export const resetPasswordSchema = z
 
 /** Schema for the forgot‑password form (email only). */
 export const forgotPasswordSchema = z.object({
-  email: z.string().email("Invalid email address"),
+  email: z.email("Invalid email address"),
 });
 
 // ---------------------------------------------------------------------------
@@ -99,6 +88,6 @@ export const createTaskSchema = z.object({
 
 /** Schema for inviting a new member by email with a specific role. */
 export const inviteMemberSchema = z.object({
-  email: z.string().email(),
+  email: z.email(),
   role: z.enum(["admin", "member", "viewer"]),
 });
