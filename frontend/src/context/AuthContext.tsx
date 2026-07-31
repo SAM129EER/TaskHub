@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
 import { authApi } from "@/api/auth.api";
 import type { User } from "@/types/auth";
+import { setAccessToken, getAccessToken, clearAccessToken } from "@/lib/token";
 
 interface AuthContextType {
   user: User | null;
@@ -19,7 +20,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const refreshUser = useCallback(async () => {
-    const token = localStorage.getItem("accessToken");
+    const token = getAccessToken();
     if (!token) {
       setUser(null);
       setIsLoading(false);
@@ -30,7 +31,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const data = await authApi.getCurrentUser();
       setUser(data.user);
     } catch {
-      localStorage.removeItem("accessToken");
+      clearAccessToken();
       setUser(null);
     } finally {
       setIsLoading(false);
@@ -43,18 +44,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signIn = async (payload: Record<string, unknown>) => {
     const data = await authApi.signIn(payload);
-    localStorage.setItem("accessToken", data.accessToken);
+    setAccessToken(data.accessToken);
     setUser(data.user);
   };
 
   const signUp = async (payload: Record<string, unknown>) => {
     const data = await authApi.signUp(payload);
-    localStorage.setItem("accessToken", data.accessToken);
+    setAccessToken(data.accessToken);
     setUser(data.user);
   };
 
   const logout = async () => {
     await authApi.logout();
+    clearAccessToken();
     setUser(null);
   };
 
@@ -80,3 +82,4 @@ export const useAuth = () => {
   if (!context) throw new Error("useAuth must be used within AuthProvider");
   return context;
 };
+

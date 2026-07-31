@@ -1,5 +1,6 @@
 import { api } from "@/lib/axios";
 import type { User, AuthPayload } from "@/types/auth";
+import { clearAccessToken } from "@/lib/token";
 
 export const authApi = {
   signUp: async (payload: Record<string, unknown>): Promise<AuthPayload> => {
@@ -45,7 +46,8 @@ export const authApi = {
     } catch {
       // Ignore logout errors
     } finally {
-      localStorage.removeItem("accessToken");
+      clearAccessToken();
     }
   },
 };
+

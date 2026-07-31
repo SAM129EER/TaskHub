@@ -6,8 +6,9 @@ import {
   useCallback,
 } from "react";
 import type { ReactNode } from "react";
-import { getAuth, logout as apiLogout } from "./api";
+import { getAuth, logout as apiLogout, tryRefreshToken } from "./api";
 import type { AuthPayload } from "./api";
+import { setAccessToken, clearAccessToken } from "./token";
 
 /** Shape of the value provided by AuthContext. */
 type AuthContextType = {
@@ -23,8 +24,8 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 /**
  * AuthProvider — Wraps the component tree and manages auth state.
- * On mount, checks localStorage for an existing token and validates
- * it by calling GET /api/auth/me.
+ * On mount, performs silent refresh via httpOnly refresh-token cookie
+ * to obtain an in-memory access token and fetch current user profile.
  */
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthPayload["user"] | null>(null);
@@ -32,20 +33,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const isAuthenticated = user !== null;
 
-  // On mount: check if user is already logged in
+  // On mount: attempt silent token refresh using httpOnly cookie
   useEffect(() => {
     const checkAuth = async () => {
-      const token = localStorage.getItem("accessToken");
-      if (!token) {
-        setIsLoading(false);
-        return;
-      }
-
       try {
-        const data = await getAuth<{ user: AuthPayload["user"] }>("/api/auth/me");
-        setUser(data.user);
+        const refreshed = await tryRefreshToken();
+        if (refreshed) {
+          const data = await getAuth<{ user: AuthPayload["user"] }>("/api/auth/me");
+          setUser(data.user);
+        } else {
+          clearAccessToken();
+          setUser(null);
+        }
       } catch {
-        localStorage.removeItem("accessToken");
+        clearAccessToken();
+        setUser(null);
       } finally {
         setIsLoading(false);
       }
@@ -57,15 +59,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   /** Called after successful sign-in or sign-up. */
   const login = useCallback(
     (accessToken: string, userData: AuthPayload["user"]) => {
-      localStorage.setItem("accessToken", accessToken);
+      setAccessToken(accessToken);
       setUser(userData);
     },
     [],
   );
 
-  /** Signs the user out and clears all local state. */
+  /** Signs the user out and clears all local/memory state. */
   const logout = useCallback(async () => {
     await apiLogout();
+    clearAccessToken();
     setUser(null);
   }, []);
 
@@ -99,3 +102,4 @@ export function useAuth() {
   }
   return context;
 }
+

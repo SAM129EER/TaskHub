@@ -12,6 +12,7 @@
  */
 
 import axios, { type AxiosError } from "axios";
+import { getAccessToken, setAccessToken, clearAccessToken } from "./token";
 
 // ---------------------------------------------------------------------------
 // Base URL — read from Vite environment variable; fall back to localhost:5000
@@ -122,8 +123,8 @@ export async function postAuth<TBody = unknown, TData = AuthPayload>(
 // ---------------------------------------------------------------------------
 
 export async function getAuth<TData>(path: string): Promise<TData> {
-  // Retrieve the current access token stored after sign‑in.
-  const token = localStorage.getItem("accessToken");
+  // Retrieve the current access token stored in memory.
+  const token = getAccessToken();
 
   try {
     // Send the GET request, attaching the Bearer token if available.
@@ -154,7 +155,7 @@ export async function getAuth<TData>(path: string): Promise<TData> {
       }
 
       // Refresh failed — session is dead; clean up and inform the caller.
-      localStorage.removeItem("accessToken");
+      clearAccessToken();
       throw new Error("Session expired. Please sign in again.");
     }
 
@@ -175,7 +176,7 @@ export async function getAuth<TData>(path: string): Promise<TData> {
 /** Module‑level promise used to deduplicate concurrent refresh attempts. */
 let refreshPromise: Promise<boolean> | null = null;
 
-async function tryRefreshToken(): Promise<boolean> {
+export async function tryRefreshToken(): Promise<boolean> {
   // If a refresh is already in flight, piggy‑back on it.
   if (refreshPromise) return refreshPromise;
 
@@ -187,9 +188,9 @@ async function tryRefreshToken(): Promise<boolean> {
         ApiSuccess<{ accessToken: string }>
       >("/api/auth/refresh-token");
 
-      // Persist the new short‑lived access token.
+      // Persist the new short‑lived access token in memory.
       if (json.success && json.data.accessToken) {
-        localStorage.setItem("accessToken", json.data.accessToken);
+        setAccessToken(json.data.accessToken);
         return true;
       }
 
@@ -220,8 +221,8 @@ export async function logout(): Promise<void> {
     // Swallow — we always clear local state even if the network call fails.
   }
 
-  // Remove the access token from localStorage to complete the logout.
-  localStorage.removeItem("accessToken");
+  // Clear the access token from memory to complete the logout.
+  clearAccessToken();
 }
 
 // ---------------------------------------------------------------------------

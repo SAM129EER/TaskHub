@@ -1,4 +1,5 @@
 import axios, { type AxiosError } from "axios";
+import { getAccessToken, setAccessToken, clearAccessToken } from "@/lib/token";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -10,15 +11,14 @@ export const api = axios.create({
   withCredentials: true,
 });
 
-// Attach Authorization header if access token exists
+// Attach Authorization header if access token exists in memory
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("accessToken");
+  const token = getAccessToken();
   if (token && config.headers) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
-
 
 let isRefreshing = false;
 let failedQueue: Array<{
@@ -36,7 +36,6 @@ const processQueue = (error: unknown, token: string | null = null) => {
   });
   failedQueue = [];
 };
-
 
 api.interceptors.response.use(
   (response) => response,
@@ -73,19 +72,19 @@ api.interceptors.response.use(
 
         if (data?.success && data?.data?.accessToken) {
           const newToken = data.data.accessToken;
-          localStorage.setItem("accessToken", newToken);
+          setAccessToken(newToken);
           api.defaults.headers.common.Authorization = `Bearer ${newToken}`;
           originalRequest.headers.Authorization = `Bearer ${newToken}`;
           processQueue(null, newToken);
           return api(originalRequest);
         } else {
           processQueue(new Error("Refresh failed"), null);
-          localStorage.removeItem("accessToken");
+          clearAccessToken();
           return Promise.reject(error);
         }
       } catch (refreshErr) {
         processQueue(refreshErr, null);
-        localStorage.removeItem("accessToken");
+        clearAccessToken();
         return Promise.reject(refreshErr);
       } finally {
         isRefreshing = false;
@@ -95,3 +94,4 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
