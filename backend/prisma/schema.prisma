@@ -1,0 +1,62 @@
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id                              String    @id @default(uuid()) @db.Uuid
+  name                            String    @db.VarChar(255)
+  email                           String    @unique @db.VarChar(255)
+  password                        String    @db.VarChar(255)
+  emailVerified                   Boolean   @default(false) @map("email_verified")
+  emailVerificationToken          String?   @unique @map("email_verification_token") @db.VarChar(255)
+  emailVerificationTokenExpiresAt DateTime? @map("email_verification_token_expires_at") @db.Timestamp(6)
+  resetPasswordToken              String?   @unique @map("reset_password_token") @db.VarChar(255)
+  resetPasswordTokenExpiresAt     DateTime? @map("reset_password_token_expires_at") @db.Timestamp(6)
+  createdAt                       DateTime  @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt                       DateTime  @updatedAt @map("updated_at") @db.Timestamp(6)
+
+  sessions Session[]
+  tasks    Task[]
+
+  @@map("users")
+}
+
+model Session {
+  id               String   @id @default(uuid()) @db.Uuid
+  userId           String   @map("user_id") @db.Uuid
+  refreshTokenHash String   @unique @map("refresh_token_hash") @db.VarChar(64)
+  userAgent        String?  @map("user_agent") @db.VarChar(500)
+  ipAddress        String?  @map("ip_address") @db.VarChar(100)
+  expiresAt        DateTime @map("expires_at") @db.Timestamp(6)
+  createdAt        DateTime @default(now()) @map("created_at") @db.Timestamp(6)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+model Task {
+  id          String    @id @default(uuid()) @db.Uuid
+  title       String    @db.VarChar(255)
+  description String?   @db.Text
+  status      String    @default("todo") @db.VarChar(50)
+  priority    String    @default("medium") @db.VarChar(50)
+  category    String?   @default("General") @db.VarChar(100)
+  dueDate     DateTime? @map("due_date") @db.Timestamp(6)
+  userId      String    @map("user_id") @db.Uuid
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamp(6)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, status])
+  @@map("tasks")
+}

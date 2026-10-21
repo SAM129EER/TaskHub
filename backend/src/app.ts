@@ -1,31 +1,34 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { errorMiddleware } from "./middleware/error.middleware.js";
-import authRoutes from "./module/auth/auth.routes.js";
+import { errorMiddleware } from "./middlewares/error.middleware.js";
+import authRoutes from "./modules/auth/auth.routes.js";
+import { env } from "./config/env.js";
+
 const app = express();
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    // Browser origins do not include a trailing slash, so keep this exact.
-    origin: "http://localhost:5173",
+    origin: env.CLIENT_URL,
     credentials: true,
   }),
 );
 app.use(cookieParser());
 
-app.get("/", (req, res) => {
-  const data = res.json({
+
+app.get("/health", (req, res) => {
+  res.status(200).json({
     success: true,
-    message: "Server is running",
+    message: "TaskHub Auth API is healthy",
   });
-  console.log("backend running");
-  // res.send("backend running")
 });
+
 
 app.use("/api/auth", authRoutes);
 
 app.use(errorMiddleware);
+
 export default app;
