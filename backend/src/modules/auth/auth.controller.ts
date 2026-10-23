@@ -29,6 +29,10 @@ const CLEAR_REFRESH_COOKIE_OPTIONS = {
   path: "/",
 };
 
+type AuthenticatedRequest = Request & {
+  user?: { userId?: string };
+};
+
 // ---------- Sign Up ----------
 
 export const signUpController = async (req: Request, res: Response) => {
@@ -139,7 +143,10 @@ export const logoutController = async (req: Request, res: Response) => {
 
 // ---------- Get Current User ----------
 
-export const getCurrentUserController = async (req: Request, res: Response) => {
+export const getCurrentUserController = async (
+  req: AuthenticatedRequest,
+  res: Response,
+) => {
   const userId = req.user?.userId;
 
   if (!userId) {
@@ -158,22 +165,12 @@ export const getCurrentUserController = async (req: Request, res: Response) => {
 };
 
 // ---------- Resend Verification Email ----------
-
 export const resendVerificationController = async (
   req: Request,
   res: Response,
 ) => {
-  const userId = req.user?.userId;
+  const result = await resendVerificationService(req.body.email);
 
-  if (!userId) {
-    res.status(401).json({
-      success: false,
-      message: "Unauthorized",
-    });
-    return;
-  }
-
-  const result = await resendVerificationService(userId);
   res.status(200).json({
     success: true,
     message: result.message,

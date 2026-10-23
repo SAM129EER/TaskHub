@@ -154,7 +154,7 @@ export const verifyEmailService = async (token: string) => {
 export const forgotPasswordService = async (email: string) => {
   const user = await findUserByEmail(email);
 
-  // Return success message regardless of existence to prevent email enumeration
+  
   if (!user) {
     return {
       message:
@@ -283,15 +283,14 @@ export const getCurrentUserService = async (userId: string) => {
 };
 
 // ---------- Resend Verification Email ----------
+export const resendVerificationService = async (email: string) => {
+  const genericMessage =
+    "If this account exists and needs verification, a verification email will be sent.";
 
-export const resendVerificationService = async (userId: string) => {
-  const user = await findUserById(userId);
-  if (!user) {
-    throw new ApiError(404, "User not found");
-  }
+  const user = await findUserByEmail(email);
 
-  if (user.emailVerified) {
-    throw new ApiError(400, "Email is already verified");
+  if (!user || user.emailVerified) {
+    return { message: genericMessage };
   }
 
   const rawToken = generateRandomToken();
@@ -299,12 +298,14 @@ export const resendVerificationService = async (userId: string) => {
 
   await updateUser(user.id, {
     emailVerificationToken: hashedToken,
-    emailVerificationTokenExpiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
+    emailVerificationTokenExpiresAt: new Date(
+      Date.now() + 24 * 60 * 60 * 1000,
+    ),
   });
 
-  sendVerificationEmail(user.email, user.name, rawToken).catch((err) => {
-    console.error("Failed to resend verification email:", err.message);
+  sendVerificationEmail(user.email, user.name, rawToken).catch((error) => {
+    console.error("Failed to resend verification email:", error.message);
   });
 
-  return { message: "Verification email sent. Please check your inbox." };
+  return { message: genericMessage };
 };

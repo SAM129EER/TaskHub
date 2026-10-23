@@ -18,6 +18,7 @@ import {
   forgotPasswordSchema,
   resetPasswordSchema,
   verifyEmailSchema,
+  resendVerificationSchema,
 } from "./auth.schema.js";
 import { authenticateToken } from "./auth.middleware.js";
 
@@ -53,7 +54,7 @@ router.post("/logout", asyncHandler(logoutController));
 router.get("/me", authenticateToken, asyncHandler(getCurrentUserController));
 router.post(
   "/resend-verification",
-  authenticateToken,
+  validate(resendVerificationSchema),
   asyncHandler(resendVerificationController),
 );
 
