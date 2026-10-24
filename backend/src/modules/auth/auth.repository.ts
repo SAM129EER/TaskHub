@@ -109,6 +109,8 @@ export const rotateSession = async (data: {
   userId: string;
   newRefreshTokenHash: string;
   expiresAt: Date;
+  userAgent?:string;
+  ipAddress?:string;
 }) => {
   return prisma.$transaction(async (tx) => {
     const deleted = await tx.session.deleteMany({
@@ -129,6 +131,8 @@ export const rotateSession = async (data: {
         userId: data.userId,
         refreshTokenHash: data.newRefreshTokenHash,
         expiresAt: data.expiresAt,
+        userAgent: data.userAgent,
+        ipAddress: data.ipAddress,
       },
     });
 

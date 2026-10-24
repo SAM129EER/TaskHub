@@ -1,4 +1,3 @@
-
 import {
   createContext,
   useCallback,
@@ -7,90 +6,90 @@ import {
   useMemo,
   useState,
   type ReactNode,
-} from "react";
+} from "react"
 
-import type { AuthUser } from "@/features/auth/api/auth.api";
+import type { AuthUser } from "@/features/auth/api/auth.api"
 
 import {
   getCurrentUser,
   refreshAccessToken,
   logout as logoutRequest,
-} from "@/features/auth/api/auth.api";
+} from "@/features/auth/api/auth.api"
 
 type AuthContextValue = {
-  user: AuthUser | null;
-  accessToken: string | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  setSession: (user: AuthUser, accessToken: string) => void;
-  clearSession: () => void;
-  logout: () => Promise<void>;
-};
+  user: AuthUser | null
+  accessToken: string | null
+  isAuthenticated: boolean
+  isLoading: boolean
+  setSession: (user: AuthUser, accessToken: string) => void
+  clearSession: () => void
+  logout: () => Promise<void>
+}
 
-const AuthContext = createContext<AuthContextValue | undefined>(undefined);
+const AuthContext = createContext<AuthContextValue | undefined>(undefined)
 
 type AuthProviderProps = {
-  children: ReactNode;
-};
+  children: ReactNode
+}
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [user, setUser] = useState<AuthUser | null>(null);
-  const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState<AuthUser | null>(null)
+  const [accessToken, setAccessToken] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   const setSession = useCallback(
     (nextUser: AuthUser, nextAccessToken: string) => {
-      setUser(nextUser);
-      setAccessToken(nextAccessToken);
+      setUser(nextUser)
+      setAccessToken(nextAccessToken)
     },
-    [],
-  );
+    []
+  )
 
   const clearSession = useCallback(() => {
-    setUser(null);
-    setAccessToken(null);
-  }, []);
+    setUser(null)
+    setAccessToken(null)
+  }, [])
 
   const logout = useCallback(async () => {
     try {
-      await logoutRequest();
+      await logoutRequest()
     } finally {
-      clearSession();
+      clearSession()
     }
-  }, [clearSession]);
+  }, [clearSession])
 
   useEffect(() => {
-    let cancelled = false;
+    let cancelled = false
 
     async function restoreSession() {
       try {
-        const refreshResponse = await refreshAccessToken();
+        const refreshResponse = await refreshAccessToken()
 
-        if (cancelled) return;
+        if (cancelled) return
 
-        const token = refreshResponse.data.accessToken;
-        const userResponse = await getCurrentUser(token);
+        const token = refreshResponse.data.accessToken
+        const userResponse = await getCurrentUser(token)
 
-        if (cancelled) return;
+        if (cancelled) return
 
-        setSession(userResponse.data.user, token);
+        setSession(userResponse.data.user, token)
       } catch {
         if (!cancelled) {
-          clearSession();
+          clearSession()
         }
       } finally {
         if (!cancelled) {
-          setIsLoading(false);
+          setIsLoading(false)
         }
       }
     }
 
-    void restoreSession();
+    void restoreSession()
 
     return () => {
-      cancelled = true;
-    };
-  }, [setSession, clearSession]);
+      cancelled = true
+    }
+  }, [setSession, clearSession])
 
   const value = useMemo<AuthContextValue>(
     () => ({
@@ -102,29 +101,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
       clearSession,
       logout,
     }),
-    [
-      user,
-      accessToken,
-      isLoading,
-      setSession,
-      clearSession,
-      logout,
-    ],
-  );
+    [user, accessToken, isLoading, setSession, clearSession, logout]
+  )
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
 
 export function useAuth() {
-  const context = useContext(AuthContext);
+  const context = useContext(AuthContext)
 
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error("useAuth must be used within an AuthProvider")
   }
 
-  return context;
+  return context
 }

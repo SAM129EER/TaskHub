@@ -19,15 +19,20 @@ const REFRESH_COOKIE_OPTIONS = {
   secure: isProduction,
   sameSite: (isProduction ? "none" : "lax") as "none" | "lax",
   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-  path: "/",
+  path: "/api/auth",
 };
 
 const CLEAR_REFRESH_COOKIE_OPTIONS = {
   httpOnly: true,
   secure: isProduction,
   sameSite: (isProduction ? "none" : "lax") as "none" | "lax",
-  path: "/",
+  path: "/api/auth",
 };
+
+const getClientMeta = (req: Request) => ({
+  userAgent: (req.headers["user-agent"] as string) || undefined,
+  ipAddress: req.ip || undefined,
+});
 
 type AuthenticatedRequest = Request & {
   user?: { userId?: string };
@@ -51,7 +56,7 @@ export const signUpController = async (req: Request, res: Response) => {
 // ---------- Sign In ----------
 
 export const signInController = async (req: Request, res: Response) => {
-  const result = await signInService(req.body);
+  const result = await signInService(req.body , getClientMeta(req));
 
   res.cookie("refreshToken", result.refreshToken, REFRESH_COOKIE_OPTIONS);
   res.status(200).json({
@@ -113,7 +118,7 @@ export const refreshTokenController = async (req: Request, res: Response) => {
     return;
   }
 
-  const result = await refreshTokenService(refreshToken);
+  const result = await refreshTokenService(refreshToken , getClientMeta(req));
 
   res.cookie("refreshToken", result.refreshToken, REFRESH_COOKIE_OPTIONS);
   res.status(200).json({

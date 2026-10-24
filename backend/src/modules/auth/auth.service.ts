@@ -85,7 +85,13 @@ export const signUpService = async (body: SignUpInput) => {
 
 // ---------- Sign In ----------
 
-export const signInService = async (body: SignInInput) => {
+export const signInService = async (
+  body: SignInInput,
+  meta?: {
+    userAgent?: string;
+    ipAddress?: string;
+  },
+) => {
   const user = await findUserByEmail(body.email);
   if (!user) {
     throw new ApiError(401, "Invalid email or password");
@@ -111,6 +117,8 @@ export const signInService = async (body: SignInInput) => {
     userId: user.id,
     refreshTokenHash: hashToken(refreshToken),
     expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+    userAgent: meta?.userAgent,
+    ipAddress: meta?.ipAddress,
   });
 
   return {
@@ -154,7 +162,6 @@ export const verifyEmailService = async (token: string) => {
 export const forgotPasswordService = async (email: string) => {
   const user = await findUserByEmail(email);
 
-  
   if (!user) {
     return {
       message:
@@ -212,7 +219,10 @@ export const resetPasswordService = async (
 };
 
 // ---------- Refresh Token Rotation ----------
-export const refreshTokenService = async (refreshToken: string) => {
+export const refreshTokenService = async (
+  refreshToken: string,
+  meta?: { userAgent?: string; ipAddress?: string },
+) => {
   let payload: { userId: string };
 
   try {
@@ -226,7 +236,11 @@ export const refreshTokenService = async (refreshToken: string) => {
   const session = await findSessionByRefreshTokenHash(currentRefreshTokenHash);
 
   if (!session || session.userId !== payload.userId) {
-    throw new ApiError(401, "Session not found. Please log in again.");
+    await deleteAllUserSessions(payload.userId);
+    throw new ApiError(
+      401,
+      "Security alert: Session invalidated. Please log in again.",
+    );
   }
 
   if (session.expiresAt <= new Date()) {
@@ -244,9 +258,12 @@ export const refreshTokenService = async (refreshToken: string) => {
     userId: payload.userId,
     newRefreshTokenHash: hashToken(newRefreshToken),
     expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+    userAgent: meta?.userAgent ?? session.userAgent ?? undefined,
+    ipAddress: meta?.ipAddress ?? session.ipAddress ?? undefined,
   });
 
   if (!rotated) {
+    await deleteAllUserSessions(payload.userId);
     throw new ApiError(
       401,
       "Session has already been used. Please log in again.",
@@ -298,9 +315,7 @@ export const resendVerificationService = async (email: string) => {
 
   await updateUser(user.id, {
     emailVerificationToken: hashedToken,
-    emailVerificationTokenExpiresAt: new Date(
-      Date.now() + 24 * 60 * 60 * 1000,
-    ),
+    emailVerificationTokenExpiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
   });
 
   sendVerificationEmail(user.email, user.name, rawToken).catch((error) => {

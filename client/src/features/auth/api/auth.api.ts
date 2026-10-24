@@ -4,7 +4,7 @@ import type {
   SignInFormValues,
   ForgotPasswordFormValues,
   ResetPasswordFormValues,
-} from "@/features/auth/schemas/auth.schema";
+} from "@/features/auth/schemas/auth.schema"
 
 export type AuthUser = {
   id: string
@@ -22,20 +22,6 @@ export type SignUpResponse = {
     user: AuthUser
   }
 }
-
-export function signUp(input: SignUpFormValues): Promise<SignUpResponse> {
-  return apiPost<SignUpResponse>("/auth/signup", input)
-}
-
-export type VerifyEmailResponse = {
-  success: boolean
-  message: string
-}
-
-export function verifyEmail(token: string): Promise<VerifyEmailResponse> {
-  return apiPost<VerifyEmailResponse>("/auth/verify-email", { token })
-}
-
 export type SignInResponse = {
   success: boolean
   message: string
@@ -45,9 +31,11 @@ export type SignInResponse = {
   }
 }
 
-export function signIn(input: SignInFormValues): Promise<SignInResponse> {
-  return apiPost<SignInResponse>("/auth/signin", input)
+export type VerifyEmailResponse = {
+  success: boolean
+  message: string
 }
+
 
 export type RefreshTokenResponse = {
   success: boolean
@@ -62,6 +50,23 @@ export type CurrentUserResponse = {
   data: {
     user: AuthUser
   }
+}
+
+export type AuthMessageResponse = {
+  success: boolean
+  message: string
+}
+
+export function signUp(input: SignUpFormValues): Promise<SignUpResponse> {
+  return apiPost<SignUpResponse>("/auth/signup", input)
+}
+
+export function signIn(input: SignInFormValues): Promise<SignInResponse> {
+  return apiPost<SignInResponse>("/auth/signin", input)
+}
+
+export function verifyEmail(token: string): Promise<VerifyEmailResponse> {
+  return apiPost<VerifyEmailResponse>("/auth/verify-email", { token })
 }
 
 // Share one refresh request if React Strict Mode or multiple callers
@@ -90,35 +95,26 @@ export function getCurrentUser(
   })
 }
 
-
 export function logout(): Promise<void> {
-  return apiPost("/auth/logout", {});
+  return apiPost("/auth/logout", {})
 }
 
-
-export type AuthMessageResponse = {
-  success: boolean;
-  message: string;
-};
-
 export function forgotPassword(
-  input: ForgotPasswordFormValues,
+  input: ForgotPasswordFormValues
 ): Promise<AuthMessageResponse> {
-  return apiPost<AuthMessageResponse>("/auth/forgot-password", input);
+  return apiPost<AuthMessageResponse>("/auth/forgot-password", input)
 }
 
 export function resetPassword(
-  input: ResetPasswordFormValues,
+  input: ResetPasswordFormValues
 ): Promise<AuthMessageResponse> {
-  return apiPost<AuthMessageResponse>("/auth/reset-password", input);
+  return apiPost<AuthMessageResponse>("/auth/reset-password", input)
 }
 
-
-
 export function resendVerification(
-  email: string,
+  email: string
 ): Promise<AuthMessageResponse> {
   return apiPost<AuthMessageResponse>("/auth/resend-verification", {
     email,
-  });
+  })
 }

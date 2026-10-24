@@ -142,25 +142,27 @@ export default function SignInPage() {
           </Field>
         </FieldGroup>
       </form>
-
-      <p className="mt-6 text-center text-sm text-muted-foreground">
-        Don't have an account?{" "}
-        <Link
-          to="/signup"
-          className="font-medium text-foreground underline-offset-4 hover:underline"
-        >
-          Sign up
-        </Link>
-      </p>
-      <p className="text-center text-sm text-muted-foreground">
-        Haven't received your verification email?{" "}
-        <Link
-          to="/resend-verification"
-          className="font-medium text-foreground underline-offset-4 hover:underline"
-        >
-          Resend it
-        </Link>
-      </p>
+      
+      <div className="space-y-3">
+        <p className="mt-6 text-center text-sm text-muted-foreground">
+          Don't have an account?{" "}
+          <Link
+            to="/signup"
+            className="font-medium text-foreground underline-offset-4 hover:underline"
+          >
+            Sign up
+          </Link>
+        </p>
+        <p className="text-center text-sm text-muted-foreground">
+          Haven't received your verification email?{" "}
+          <Link
+            to="/resend-verification"
+            className="font-medium text-foreground underline-offset-4 hover:underline"
+          >
+            Resend it
+          </Link>
+        </p>
+      </div>
     </div>
   )
 }
